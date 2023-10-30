@@ -36,6 +36,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -51,6 +54,9 @@
       <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
       <Filter>Header File</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,6 +5,7 @@
 #include "Timer.h"
 
 void __default_reshape(GLFWwindow* window, int width, int height);
+void __default_keyboard(GLFWwindow* window, int key, int scanCode, int action, int mode);
 
 class Engine {
 public:

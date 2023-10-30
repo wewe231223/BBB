@@ -51,6 +51,8 @@ void Engine::Init() {
 
 	// resister callbacks 
 	glfwSetFramebufferSizeCallback(m_windowInfo.window, __default_reshape);
+
+	glfwSetKeyCallback(m_windowInfo.window, __default_keyboard);
 }
 
 void Engine::Update() {
@@ -67,7 +69,7 @@ void Engine::LateUpdate() {
 
 void Engine::Render() {
 	//// ·»´õ¸µ ÄÚµå
-	glClearColor(0.5f, 0.5f, 0.5f, 1.f);
+	glClearColor(0.f, 0.f, 0.0f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glfwSwapBuffers(m_windowInfo.window);
@@ -92,3 +94,9 @@ void __default_reshape(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
+void __default_keyboard(GLFWwindow* window, int key, int scanCode, int action, int mode) {
+	std::cout << key << std::endl;
+
+	
+
+}
