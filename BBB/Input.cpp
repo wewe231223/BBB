@@ -19,7 +19,7 @@ Input::Input(GLFWwindow* window){
 	memset(m_keys, 0, GLFW_KEY_LAST * 4);
 
 
-
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	
 }
 
@@ -32,10 +32,10 @@ Input::~Input(){
 }
 
 void Input::Update(){
+	glfwGetCursorPos(m_window, &m_mouseX, &m_mouseY);
 
 	
 
-
-
+	std::cout << m_mouseX << " , " << m_mouseY << std::endl;
 
 }

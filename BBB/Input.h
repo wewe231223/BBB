@@ -17,6 +17,12 @@ private:
 
 	KEY_STATE* m_keys{ nullptr };
 
+	double m_mouseX{};
+	double m_mouseY{};
+
+
+
+
 public:
 
 	void Update();
