@@ -41,6 +41,14 @@ void Engine::Init() {
 	glViewport(0, 0, m_windowInfo.width, m_windowInfo.height);
 
 	glfwSwapInterval(m_swapInterver);
+
+
+
+	this->m_shader = std::make_unique<Shader>();
+
+
+	// resister callbacks 
+	glfwSetFramebufferSizeCallback(m_windowInfo.window, __default_reshape);
 }
 
 void Engine::Update() {
@@ -68,5 +76,11 @@ void Engine::Loop() {
 		LateUpdate();
 
 		Render();
+
+		glfwPollEvents();
 	}
+}
+
+void __default_reshape(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
 }

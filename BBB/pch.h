@@ -1,6 +1,8 @@
 #pragma once 
 
-
+//stream
+#include <iostream>
+#define ZeroMemory(Destination,Length) memset((Destination),0,(Length))
 
 // OpenGL 헤더 파일들 추가
 #include <gl/glew.h>
@@ -68,7 +70,6 @@ using vertex = _TAG_VERTEX;
 using WINDOWINFO = _TAG_WINDOWINFO;
 
 extern std::unique_ptr<class Engine> engine;
-
 
 
 
