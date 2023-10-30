@@ -2,7 +2,9 @@
 
 //stream
 #include <iostream>
-#define ZeroMemory(Destination,Length) memset((Destination),0,(Length))
+#include <windows.h>
+#include <winnt.h>
+
 
 // OpenGL 헤더 파일들 추가
 #include <gl/glew.h>
@@ -67,7 +69,7 @@ using float3 = _TAG_FLOAT3;
 using float4 = _TAG_FLOAT4;
 using vertex = _TAG_VERTEX;
 
-using WINDOWINFO = _TAG_WINDOWINFO;
+using WINDOWINFORMATION = _TAG_WINDOWINFO;
 
 extern std::unique_ptr<class Engine> engine;
 

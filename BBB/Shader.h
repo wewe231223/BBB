@@ -2,16 +2,15 @@
 class Shader{
 
 private:
-	unsigned int m_vertexShaderID{};
-	unsigned int m_fragmentShaderID{};
+
 	unsigned int m_shaderID{};
 
-
+	
 public:
 
 	Shader();
 
-	unsigned int GetShaderID();
+	unsigned int GetShaderID() { return m_shaderID; };
 
 };
 

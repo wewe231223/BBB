@@ -11,6 +11,8 @@ Shader::Shader(){
 	std::stringstream Vertexstream = std::stringstream{};
 	std::stringstream Fragmentstream = std::stringstream{};
 
+	unsigned int vertexShaderID{};
+	unsigned int fragmentShaderID{};
 
 	std::string s1{ " " };
 	std::string s2{ " " };
@@ -39,16 +41,16 @@ Shader::Shader(){
 
 
 
-	m_vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(m_vertexShaderID, 1, &VertexShaderSource, NULL);
-	glCompileShader(m_vertexShaderID);
+	vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShaderID, 1, &VertexShaderSource, NULL);
+	glCompileShader(vertexShaderID);
 
 	GLint result{};
 	GLchar errorlog[512]{};
 
-	glGetShaderiv(m_vertexShaderID, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &result);
 	if (!result) {
-		glGetShaderInfoLog(m_vertexShaderID, 512, NULL, errorlog);
+		glGetShaderInfoLog(vertexShaderID, 512, NULL, errorlog);
 		std::cerr << "ERROR : VERTEX SHADER COMPILE ERROR" << std::endl;
 		std::cerr << errorlog << std::endl;
 		exit(EXIT_FAILURE);
@@ -60,15 +62,15 @@ Shader::Shader(){
 
 
 
-	m_fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(m_fragmentShaderID, 1, &FragmentShaderSource, NULL);
-	glCompileShader(m_fragmentShaderID);
+	fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShaderID, 1, &FragmentShaderSource, NULL);
+	glCompileShader(fragmentShaderID);
 
 	ZeroMemory(errorlog, 512);
 
-	glGetShaderiv(m_fragmentShaderID, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &result);
 	if (!result) {
-		glGetShaderInfoLog(m_fragmentShaderID, 512, NULL, errorlog);
+		glGetShaderInfoLog(fragmentShaderID, 512, NULL, errorlog);
 		std::cerr << "ERROR : FRAGMENT SHADER COMPILE ERROR" << std::endl;
 		std::cerr << errorlog << std::endl;
 		exit(EXIT_FAILURE);
@@ -78,13 +80,13 @@ Shader::Shader(){
 	}
 
 	m_shaderID = glCreateProgram();
-	glAttachShader(m_shaderID, m_vertexShaderID);
-	glAttachShader(m_shaderID, m_fragmentShaderID);
+	glAttachShader(m_shaderID, vertexShaderID);
+	glAttachShader(m_shaderID, fragmentShaderID);
 
 	glLinkProgram(m_shaderID);
 
-	glDeleteShader(m_vertexShaderID);
-	glDeleteShader(m_fragmentShaderID);
+	glDeleteShader(vertexShaderID);
+	glDeleteShader(fragmentShaderID);
 
 
 	ZeroMemory(errorlog, 512);
