@@ -1,16 +1,25 @@
 #pragma once
-#define DEL delete;
+
+
+enum class KEY_STATE;
 
 class Input{
 public:
-	Input();
+	Input(GLFWwindow* window);
 	Input(const Input& other) = delete;
 
 	~Input();
 	Input& operator=(const Input& other) = delete;
 private:
-	bool* m_keys{ nullptr };
 
+	GLFWwindow* m_window{ nullptr };
+
+
+	KEY_STATE* m_keys{ nullptr };
+
+public:
+
+	void Update();
 
 
 

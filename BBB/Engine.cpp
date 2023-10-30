@@ -46,7 +46,7 @@ void Engine::Init() {
 
 	m_shader = std::make_unique<Shader>();
 	m_timer = std::make_unique<Timer>();
-
+	m_input = std::make_unique<Input>(m_windowInfo.window);
 
 
 	// resister callbacks 
@@ -57,8 +57,26 @@ void Engine::Init() {
 
 void Engine::Update() {
 	// 게임 업데이트 함수
+
+	//int result = glfwGetKey(m_windowInfo.window, GLFW_KEY_SPACE);
+
+	//if (result == GLFW_PRESS) {
+	//	std::cout << "Press!" << std::endl;
+	//}
+	//else if (result == GLFW_RELEASE) {
+	//	std::cout << "Release!" << std::endl;
+
+	//}
+	//else {
+	//	std::cout << "None!" << std::endl;
+	//}
+
 	m_timer->Update();
 	glfwSetWindowTitle(m_windowInfo.window, ((m_windowInfo.windowTitle) + std::to_string(m_timer->GetFps())).c_str() );
+
+	m_input->Update();
+
+
 }
 
 void Engine::LateUpdate() {
@@ -69,9 +87,9 @@ void Engine::LateUpdate() {
 
 void Engine::Render() {
 	//// 렌더링 코드
-	glClearColor(0.f, 0.f, 0.0f, 1.f);
+	glClearColor(0.f,0.f,0.f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
-
+	
 	glfwSwapBuffers(m_windowInfo.window);
 }
 
@@ -95,7 +113,7 @@ void __default_reshape(GLFWwindow* window, int width, int height) {
 }
 
 void __default_keyboard(GLFWwindow* window, int key, int scanCode, int action, int mode) {
-	std::cout << key << std::endl;
+
 
 	
 
