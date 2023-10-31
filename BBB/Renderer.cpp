@@ -79,7 +79,7 @@ void Renderer::Render(){
 
 void Renderer::Update(float dt){
 
-	m_camera->Update();
+	m_camera->Update(dt);
 
 	for (auto& i : m_modelList) {
 		i.Update(dt);

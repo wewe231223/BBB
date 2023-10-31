@@ -23,6 +23,15 @@ Input* Input::GetInstance(GLFWwindow* window){
 		}
 
 		InputInstance->m_keys.shrink_to_fit();
+
+
+		double tx_, ty_;
+		glfwGetCursorPos(InputInstance->m_window, &tx_, &ty_);
+
+		InputInstance->m_prevMouse.x = static_cast<float>(tx_);
+		InputInstance->m_prevMouse.y = static_cast<float>(ty_);
+
+		
 	}
 
 
@@ -40,7 +49,6 @@ Input* Input::GetInstance()
 
 
 void Input::Update(){
-	glfwGetCursorPos(m_window, &m_mouseX, &m_mouseY);
 
 	for (auto& i : m_keys) {
 		if (glfwGetKey(m_window, i.second) == GLFW_PRESS) {
@@ -50,18 +58,15 @@ void Input::Update(){
 			// if pressed, prev state is released or none
 			if (i.first == KEY_STATE::NONE or i.first == KEY_STATE::RELEASE) {
 				i.first = KEY_STATE::DOWN;
-				std::cout << i.second << ": is first press" << std::endl;
 			}
 			else if (i.first == KEY_STATE::DOWN) {
 				i.first = KEY_STATE::PRESS;
-				std::cout << i.second << ": is being press" << std::endl;
 			}
 
 		}
 		else {
 			if (i.first == KEY_STATE::PRESS or i.first == KEY_STATE::DOWN) {
 				i.first = KEY_STATE::RELEASE;
-				std::cout << i.second << ": is released" << std::endl;
 
 			}
 			else {
@@ -70,8 +75,20 @@ void Input::Update(){
 		}
 	}
 
+	double tx_, ty_;
 
-	//std::cout << m_mouseX << " , " << m_mouseY << std::endl;
+
+	glfwGetCursorPos(m_window, &tx_, &ty_);
+
+	m_deltaMouse.x = static_cast<float>(tx_) - m_prevMouse.x;
+	m_deltaMouse.y = static_cast<float>(ty_) - m_prevMouse.y;
+
+	m_prevMouse.x = static_cast<float>(tx_);
+	m_prevMouse.y = static_cast<float>(ty_);
+
+
+
+
 
 }
 

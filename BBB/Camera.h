@@ -1,4 +1,8 @@
 #pragma once
+
+constexpr auto MOUSE_SENSITIVE = 20.f;
+
+
 class Camera{
 public:
 	Camera(GLFWwindow* Window, UINT ShaderId, glm::vec3 EYE, float NearZ, float FarZ) ;
@@ -21,6 +25,11 @@ private:
 	glm::vec3 m_at{0.f,0.f,-1.f};
 	glm::vec3 m_up{ 0.f, 1.f, 0.f };
 	
+	glm::vec3 m_basisX{ 0.f };
+	glm::vec3 m_basisY{ 0.f };
+	glm::vec3 m_basisZ{ 0.f };
+
+
 	float m_nearZ{ 0.1f };
 	float m_farZ{ 1000.f };
 
@@ -31,7 +40,7 @@ private:
 public:
 
 
-	void Update();
+	void Update(float dt);
 	void Render(UINT sid);
 
 

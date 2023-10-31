@@ -61,6 +61,11 @@ struct _TAG_FLOAT4 {
 	float w{ };
 };
 
+struct _TAG_DOUBLE2 {
+	double x{};
+	double y{};
+};
+
 struct _TAG_VERTEX {
 	_TAG_FLOAT3 position{ };
 	_TAG_FLOAT4 color{ };
@@ -71,15 +76,16 @@ struct _TAG_VERTEX {
 using float2 = _TAG_FLOAT2;
 using float3 = _TAG_FLOAT3;
 using float4 = _TAG_FLOAT4;
+using double2 = _TAG_DOUBLE2;
 using vertex = _TAG_VERTEX;
 
 using WINDOWINFORMATION = _TAG_WINDOWINFO;
 
 enum class KEY_STATE {
-	NONE,
-	PRESS,
-	DOWN,
-	RELEASE
+	NONE, // 어떤 행동 상태도 아닐 때 
+	PRESS, // 계속 누르고 있는 상태 
+	DOWN, // 눌렀을 때 그 상태 
+	RELEASE // 키를 떼었을때 그 상태 
 };
 
 

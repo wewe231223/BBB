@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "Camera.h"
+#include "Input.h"
+
+
 
 Camera::Camera(GLFWwindow* Window, UINT ShaderId, glm::vec3 EYE, float NearZ, float FarZ)
 	: m_window(Window), m_shaderId(ShaderId), m_eye(EYE), m_nearZ(NearZ), m_farZ(FarZ)
@@ -13,16 +16,63 @@ Camera::Camera(GLFWwindow* Window, UINT ShaderId, glm::vec3 EYE, float NearZ, fl
 
 	m_projectionLocation = glGetUniformLocation(m_shaderId, "perspective");
 	m_lookatLocation = glGetUniformLocation(m_shaderId, "lookat");
+
+
+	m_basisZ = glm::normalize(-m_at);
+	m_basisX = glm::normalize(glm::cross(m_up,m_basisZ));
+	m_basisY = glm::cross(m_basisZ, m_basisX);
+
+
+
+
 }
 
-void Camera::Update(){
+void Camera::Update(float dt){
 
 	int w, h;
 	glfwGetFramebufferSize(m_window, &w, &h);
 	m_aspect = static_cast<float>(w) / static_cast<float>(h);
 
 	
+	if (Input::GetInstance()->GetKey(GLFW_KEY_W) == KEY_STATE::PRESS) {
+		m_eye -= m_basisZ * dt;
+	}
 
+
+	if (Input::GetInstance()->GetKey(GLFW_KEY_S) == KEY_STATE::PRESS) {
+		m_eye += m_basisZ * dt;
+	}
+
+
+	if (Input::GetInstance()->GetKey(GLFW_KEY_A) == KEY_STATE::PRESS) {
+		m_eye -= m_basisX * dt;
+	}
+
+
+	if (Input::GetInstance()->GetKey(GLFW_KEY_D) == KEY_STATE::PRESS) {
+		m_eye += m_basisX * dt;
+	}
+
+	float2 deltaMouse = Input::GetInstance()->GetDeltaMouse();
+
+	if (!(deltaMouse.x == 0 and deltaMouse.y == 0)) {
+
+		glm::mat4 cameraRotate{ 1.f };
+
+
+		cameraRotate = glm::rotate(cameraRotate, glm::radians(deltaMouse.y * dt * MOUSE_SENSITIVE), m_basisX);
+		cameraRotate = glm::rotate(cameraRotate, glm::radians(deltaMouse.x * dt * MOUSE_SENSITIVE), m_basisY);
+
+		m_at = glm::normalize(glm::vec3(cameraRotate * glm::vec4(m_at, 1.f)));
+
+
+		m_basisZ = glm::normalize(-m_at);
+		m_basisX = glm::normalize(glm::cross(m_up, m_basisZ));
+		m_basisY = glm::cross(m_basisZ, m_basisX);
+
+
+
+	}
 
 
 }

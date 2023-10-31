@@ -42,7 +42,13 @@ void Engine::Init() {
 	// ºäÆ÷Æ® ¼³Á¤
 	glViewport(0, 0, m_windowInfo.width, m_windowInfo.height);
 
+
+	// set Swap Interval (value =  0 )
 	glfwSwapInterval(m_swapInterver);
+
+
+	glfwSetInputMode(m_windowInfo.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 
 
 

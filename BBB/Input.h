@@ -15,10 +15,12 @@ private:
 
 	// # DO NOT MODIFY THIS PAIR.SECOND #
 	std::vector<std::pair<KEY_STATE, int>> m_keys;
+		
+	float2 m_prevMouse{};
+	float2 m_deltaMouse{};
 
-	double m_mouseX{};
-	double m_mouseY{};
 
+	
 	static Input* InputInstance;
 
 public:
@@ -29,6 +31,6 @@ public:
 	void Update();
 
 	const KEY_STATE GetKey(int key);
-
+	const float2 GetDeltaMouse() { return m_deltaMouse; };
 };
 
