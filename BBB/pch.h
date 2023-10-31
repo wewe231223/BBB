@@ -27,8 +27,11 @@
 
 using int32 = __int32;
 using int64 = __int64;
+
+using uint8 = unsigned __int8;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
+
 
 struct _TAG_WINDOWINFO {
 	GLFWwindow* window{ };
@@ -70,6 +73,14 @@ using float4 = _TAG_FLOAT4;
 using vertex = _TAG_VERTEX;
 
 using WINDOWINFORMATION = _TAG_WINDOWINFO;
+
+enum class KEY_STATE {
+	NONE,
+	PRESS,
+	DOWN,
+	RELEASE
+};
+
 
 extern std::unique_ptr<class Engine> engine;
 
