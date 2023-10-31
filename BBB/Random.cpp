@@ -28,7 +28,6 @@ template<>
 int Random::Rand(int min, int max)
 {
 	std::uniform_int_distribution<int>rdi(min, max);
-
 	return rdi(Random_Engine::gen);
 }
 
@@ -40,6 +39,18 @@ float3 Random::Rand(float3 min, float3 max)
 	std::uniform_real_distribution<float>rdfz(min.z, max.z);
 
 	return float3{ rdfx(Random_Engine::gen), rdfy(Random_Engine::gen) , rdfz(Random_Engine::gen) };
+}
+
+template<>
+float4 Random::Rand(float4 min, float4 max)
+{
+
+	std::uniform_real_distribution<float>rdfx(min.x, max.x);
+	std::uniform_real_distribution<float>rdfy(min.y, max.y);
+	std::uniform_real_distribution<float>rdfz(min.z, max.z);
+	std::uniform_real_distribution<float>rdfw(min.w, max.w);
+
+	return float4{ rdfx(Random_Engine::gen), rdfy(Random_Engine::gen) , rdfz(Random_Engine::gen), rdfw(Random_Engine::gen)};
 }
 
 

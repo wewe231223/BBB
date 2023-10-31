@@ -39,6 +39,18 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -59,5 +71,33 @@
     <ClInclude Include="Input.h">
       <Filter>Header File</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="teapot.obj">
+      <Filter>Resources File</Filter>
+    </Object>
+    <Object Include="sphere.obj">
+      <Filter>Resources File</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Fragment.glsl">
+      <Filter>Shader File</Filter>
+    </None>
+    <None Include="Vertex.glsl">
+      <Filter>Shader File</Filter>
+    </None>
   </ItemGroup>
 </Project>

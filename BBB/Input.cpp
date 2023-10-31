@@ -1,28 +1,41 @@
 #include "pch.h"
 #include "Input.h"
+#pragma warning(disable: 4002)
 
+Input* Input::InputInstance = nullptr;
 
+Input* Input::GetInstance(GLFWwindow* window){
+	
+	if (InputInstance == nullptr) {
 
+		InputInstance = new Input;
 
-Input::Input(GLFWwindow* window){
+		InputInstance->m_window = window;
+		InputInstance->m_keys.resize(GLFW_KEY_LAST);
 
-	m_window = window;
+		for (auto i = 1; i <= GLFW_KEY_LAST; ++i) {
+			int result = glfwGetKeyScancode(i);
 
-	m_keys.resize(GLFW_KEY_LAST);
+			if (result > 0) {
+				InputInstance->m_keys.push_back(std::make_pair(KEY_STATE::NONE, i));
+			}
 
-
-	// resister key for printable
-	for (auto i = 1; i <= GLFW_KEY_LAST; ++i) {
-		int result = glfwGetKeyScancode(i);
-
-		if (result > 0) {
-			m_keys.push_back(std::make_pair(KEY_STATE::NONE, i));
 		}
 
+		InputInstance->m_keys.shrink_to_fit();
 	}
 
-	m_keys.shrink_to_fit();
+
+	return InputInstance;
 }
+
+Input* Input::GetInstance()
+{
+	assert(InputInstance != nullptr, __FILE__, __LINE__);	
+	return InputInstance;
+}
+
+
 
 
 
@@ -60,4 +73,17 @@ void Input::Update(){
 
 	//std::cout << m_mouseX << " , " << m_mouseY << std::endl;
 
+}
+
+const KEY_STATE Input::GetKey(int key)
+{
+
+	for (auto& i : m_keys) {
+		if (i.second == key) {
+			return i.first;
+		}
+	}
+
+	
+	return KEY_STATE::NONE;
 }

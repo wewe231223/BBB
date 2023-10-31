@@ -44,38 +44,20 @@ void Engine::Init() {
 
 
 
-	m_shader = std::make_unique<Shader>();
 	m_timer = std::make_unique<Timer>();
-	m_input = std::make_unique<Input>(m_windowInfo.window);
-
+	m_renderer = std::make_unique<Renderer>(m_windowInfo.window);
+	Input::GetInstance(m_windowInfo.window);
 
 	// resister callbacks 
 	glfwSetFramebufferSizeCallback(m_windowInfo.window, __default_reshape);
-
-	glfwSetKeyCallback(m_windowInfo.window, __default_keyboard);
 }
 
 void Engine::Update() {
 	// 게임 업데이트 함수
-
-	//int result = glfwGetKey(m_windowInfo.window, GLFW_KEY_SPACE);
-
-	//if (result == GLFW_PRESS) {
-	//	std::cout << "Press!" << std::endl;
-	//}
-	//else if (result == GLFW_RELEASE) {
-	//	std::cout << "Release!" << std::endl;
-
-	//}
-	//else {
-	//	std::cout << "None!" << std::endl;
-	//}
-
 	m_timer->Update();
 	glfwSetWindowTitle(m_windowInfo.window, ((m_windowInfo.windowTitle) + std::to_string(m_timer->GetFps())).c_str() );
 
-	m_input->Update();
-
+	Input::GetInstance()->Update();
 
 }
 

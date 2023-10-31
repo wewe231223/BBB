@@ -20,6 +20,8 @@ namespace Random {
 	template<>
 	float3 Rand(float3 min, float3 max);
 
+	template<>
+	float4 Rand(float4 min, float4 max);
 
 	bool Random_From_Percentage(float per);
 

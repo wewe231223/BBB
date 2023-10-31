@@ -3,12 +3,12 @@
 
 
 class Input{
-public:
-	Input(GLFWwindow* window);
+private:
+	Input() = default;
 	Input(const Input& other) = delete;
-
-	~Input() = default;
+	~Input() = delete;
 	Input& operator=(const Input& other) = delete;
+
 private:
 
 	GLFWwindow* m_window{ nullptr };
@@ -19,14 +19,16 @@ private:
 	double m_mouseX{};
 	double m_mouseY{};
 
-
+	static Input* InputInstance;
 
 public:
 
+	static Input* GetInstance(GLFWwindow* window);
+	static Input* GetInstance();
+
 	void Update();
 
-
-	
+	const KEY_STATE GetKey(int key);
 
 };
 

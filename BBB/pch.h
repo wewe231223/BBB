@@ -22,6 +22,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <map>
 #include <unordered_map>
 #include <list>
 
@@ -85,4 +86,4 @@ enum class KEY_STATE {
 extern std::unique_ptr<class Engine> engine;
 
 
-
+#include "Random.h"
