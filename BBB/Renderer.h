@@ -20,7 +20,7 @@ public:
 private:
 	GLFWwindow* m_window{ nullptr };
 
-	std::map<std::string, Mesh> m_meshDict{};
+	std::map<std::string,std::shared_ptr<Mesh>> m_meshDict{};
 	std::vector<Model> m_modelList{};
 
 	std::unique_ptr<Shader> m_shader{ nullptr };

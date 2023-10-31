@@ -1,21 +1,16 @@
 #include "pch.h"
 #include "Model.h"
 
-Model::Model(UINT Vao, size_t VertexCount)
+Model::Model(UINT sid,UINT Vao, size_t VertexCount)
 {
 
     m_vao = Vao;
     m_vertexCount = VertexCount;
-
+    m_transformLocation = glGetUniformLocation(sid, "transform");
 
 
 }
 
-Model::Model(const Model& other){
-     
-    m_vao = other.m_vao;
-    m_vertexCount = other.m_vertexCount;
-}
 
 Model& Model::operator=(const Model& other)
 {
@@ -23,18 +18,32 @@ Model& Model::operator=(const Model& other)
     // TODO: 여기에 return 문을 삽입합니다.
 }
 
-void Model::Render(float sid){
+void Model::Render(UINT sid){
+
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    glm::mat4 Trans{ 1.f };
+
+    Trans = glm::translate(Trans, m_position);
+    Trans = glm::scale(Trans, glm::vec3(m_scale.x,m_scale.y,m_scale.z));
+    Trans = glm::rotate(Trans, glm::radians(m_rotation.x), glm::vec3(1.f, 0.f, 0.f));
+    Trans = glm::rotate(Trans, glm::radians(m_rotation.y), glm::vec3(0.f, 1.f, 0.f));
+    Trans = glm::rotate(Trans, glm::radians(m_rotation.z), glm::vec3(0.f, 0.f, 1.f));
 
 
 
 
+    glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(Trans));
+    glBindVertexArray(m_vao);
+   
     glUseProgram(sid);
 
-    glBindVertexArray(m_vao);
+    
+    glDrawElements(GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, 0);
 
-    glDrawElements(GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, (void*)0);
-
-    glUseProgram(0);
 }
 
 void Model::Update(float dt){

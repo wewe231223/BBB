@@ -34,7 +34,7 @@ Mesh::Mesh(std::string path) {
 			vertex v{};
 			ZeroMemory(&v, sizeof(vertex));
 
-			file >> v.position.x >> v.position.y >> v.position.y;
+			file >> v.position.x >> v.position.y >> v.position.z;
 			v.color = Random::Rand(float4{ 0.f,0.f,0.f,1.f }, float4{ 1.f,1.f,1.f,1.f });
 
 
@@ -121,31 +121,26 @@ Mesh::Mesh(std::string path) {
 
 	m_vertexCount = m_vertexIndices.size();
 
-	glCreateVertexArrays(1, &m_vao);
+	glGenVertexArrays(1, &m_vao);
+	glGenBuffers(1, &m_vbo);
+
 	glBindVertexArray(m_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
-	UINT vbo[2]{};
-
-
-	glGenBuffers(2, vbo);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex)* m_vertex.size(), &(m_vertex[0]), GL_STATIC_DRAW);
-	
 	glGenBuffers(1, &m_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(UINT)* m_vertexIndices.size(), &(m_vertexIndices[0]), GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, position));
+	
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex)* m_vertex.size(), &(m_vertex[0]), GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex,position));
 	glEnableVertexAttribArray(0);
 
 	
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex)* m_vertex.size(), &(m_vertex[0]), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex,color));
 	glEnableVertexAttribArray(1);
 
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(UINT)* m_vertexIndices.size(), &(m_vertexIndices[0]), GL_STATIC_DRAW);
 
 }

@@ -9,7 +9,6 @@ uniform mat4 lookat;
 out vec3 out_Color;
 
 
-
 void main()
 {
 	gl_Position = perspective * lookat * transform * vec4(in_Position,1.0);

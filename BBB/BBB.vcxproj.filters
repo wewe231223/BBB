@@ -99,5 +99,8 @@
     <None Include="Vertex.glsl">
       <Filter>Shader File</Filter>
     </None>
+    <None Include="Scene1.properties">
+      <Filter>Resources File</Filter>
+    </None>
   </ItemGroup>
 </Project>

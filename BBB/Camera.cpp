@@ -18,7 +18,7 @@ Camera::Camera(GLFWwindow* Window, UINT ShaderId, glm::vec3 EYE, float NearZ, fl
 void Camera::Update(){
 
 	int w, h;
-	glfwGetWindowSize(m_window, &w, &h);
+	glfwGetFramebufferSize(m_window, &w, &h);
 	m_aspect = static_cast<float>(w) / static_cast<float>(h);
 
 	
@@ -28,15 +28,20 @@ void Camera::Update(){
 }
 
 void Camera::Render(UINT sid){
+	glUseProgram(sid);
 
 
+	//auto p{ glm::mat4(1.f) };
+	auto p{ glm::perspective(glm::radians(m_fovY), m_aspect, m_nearZ, m_farZ) };
 	glUniformMatrix4fv(m_projectionLocation, 1, GL_FALSE, glm::value_ptr(
-		glm::perspective(glm::radians(m_fovY), m_aspect, m_nearZ, m_farZ))
+		p)
 	);
 
 
+	//auto v{ glm::mat4{1.f} };
+	auto v{ glm::lookAt(m_eye, m_eye + m_at , m_up) };
 	glUniformMatrix4fv(m_lookatLocation, 1, GL_FALSE, glm::value_ptr(
-		glm::lookAt(m_eye, m_at + m_eye, m_up))
+		v)
 	);
 
 

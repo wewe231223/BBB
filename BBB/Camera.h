@@ -15,10 +15,10 @@ private:
 	UINT m_lookatLocation{ 0 };
 
 
-	float m_fovY{ 30.f };
+	float m_fovY{ 45.f };
 	
-	glm::vec3 m_eye{};
-	glm::vec3 m_at{1.f,1.f,1.f};
+	glm::vec3 m_eye{ };
+	glm::vec3 m_at{0.f,0.f,-1.f};
 	glm::vec3 m_up{ 0.f, 1.f, 0.f };
 	
 	float m_nearZ{ 0.1f };

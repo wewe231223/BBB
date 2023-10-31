@@ -14,6 +14,8 @@ void Engine::Init() {
 	// OpenGL 버전 설정
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+
 
 	// 윈도우 정보 초기 설정
 	m_windowInfo.width = 1920;
@@ -50,6 +52,10 @@ void Engine::Init() {
 
 	// resister callbacks 
 	glfwSetFramebufferSizeCallback(m_windowInfo.window, __default_reshape);
+
+	//load scene 
+
+	m_renderer->Load("Scene1.properties");
 }
 
 void Engine::Update() {
@@ -58,7 +64,7 @@ void Engine::Update() {
 	glfwSetWindowTitle(m_windowInfo.window, ((m_windowInfo.windowTitle) + std::to_string(m_timer->GetFps())).c_str() );
 
 	Input::GetInstance()->Update();
-
+	m_renderer->Update(m_timer->GetDeltaTime());
 }
 
 void Engine::LateUpdate() {
@@ -70,23 +76,24 @@ void Engine::LateUpdate() {
 void Engine::Render() {
 	//// 렌더링 코드
 	glClearColor(0.f,0.f,0.f, 1.f);
-	glClear(GL_COLOR_BUFFER_BIT);
-	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	m_renderer->Render();
 	glfwSwapBuffers(m_windowInfo.window);
+	
 }
 
 void Engine::Loop() {
 	while (!glfwWindowShouldClose(m_windowInfo.window)) {
 
 		Update();
-
 		LateUpdate();
+
 
 		Render();
 
-		glfwPollEvents();
-		
 
+		glfwPollEvents();
 	}
 }
 

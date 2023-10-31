@@ -15,6 +15,7 @@ private:
 
 	unsigned int m_vao{};
 	unsigned int m_ebo{};
+	unsigned int m_vbo{};
 
 public:
 	const UINT  GetMesh() { return m_vao; }
