@@ -57,7 +57,54 @@ void Renderer::Load(std::string path){
 			}
 
 
+
+
 		}
+
+		if (head._Equal("->Position")) {
+
+			glm::vec3 pos{};
+
+
+			file >> pos.x >> pos.y >> pos.z;
+
+			assert(m_modelList.size() != 0, __FILE__, __LINE__);
+
+
+			m_modelList.back().Set(pos, SET_::POSITION);
+
+
+
+		}
+		if (head._Equal("->Rotation")) {
+
+			glm::vec3 rot{};
+
+
+			file >> rot.x >> rot.y >> rot.z;
+
+			assert(m_modelList.size() != 0, __FILE__, __LINE__);
+
+
+			m_modelList.back().Set(rot, SET_::ROTATION);
+
+
+
+		}
+
+		if (head._Equal("->Scale")) {
+
+			float3 scale{};
+
+
+			file >> scale.x >> scale.y >> scale.z;
+
+			assert(m_modelList.size() != 0, __FILE__, __LINE__);
+
+			m_modelList.back().Set(scale, SET_::SCALE);
+
+		}
+
 
 
 	}

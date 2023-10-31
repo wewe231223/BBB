@@ -60,8 +60,8 @@ void Camera::Update(float dt){
 		glm::mat4 cameraRotate{ 1.f };
 
 
-		cameraRotate = glm::rotate(cameraRotate, glm::radians(deltaMouse.y * dt * MOUSE_SENSITIVE), m_basisX);
-		cameraRotate = glm::rotate(cameraRotate, glm::radians(deltaMouse.x * dt * MOUSE_SENSITIVE), m_basisY);
+		cameraRotate = glm::rotate(cameraRotate, glm::radians(-deltaMouse.y * dt * MOUSE_SENSITIVE), m_basisX);
+		cameraRotate = glm::rotate(cameraRotate, glm::radians(-deltaMouse.x * dt * MOUSE_SENSITIVE), m_basisY);
 
 		m_at = glm::normalize(glm::vec3(cameraRotate * glm::vec4(m_at, 1.f)));
 

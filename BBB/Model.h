@@ -1,4 +1,12 @@
 #pragma once
+
+enum class SET_ {
+	POSITION,
+	ROTATION,
+	SCALE
+};
+
+
 class Model {
 public:
 	Model() = default;
@@ -26,13 +34,26 @@ private:
 	glm::vec3 m_rotation{0.f};
 	float3 m_scale{1.f,1.f,1.f};
 
-	Model* m_Parent{nullptr};
+	Model* m_parent{nullptr};
 
 public:
 
 
 	void Render(UINT sid);
 	void Update(float dt);
+
+	template<typename T,typename Q>
+	void Set(T Src,Q Qualifier) {};
+
+	template<>
+	void Set(const glm::vec3 Src, SET_ Qualifier) { if (Qualifier == SET_::POSITION) { m_position = Src; } else { m_rotation = Src; } };
+
+	template<>
+	void Set(const float3 Src, SET_ Qualifier) { m_scale = Src; }
+
+	template<>
+	void Set(Model* Src, SET_ Qualifier) { m_parent = Src; }
+
 
 };
 	
