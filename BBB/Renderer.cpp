@@ -5,6 +5,7 @@
 Renderer::Renderer(GLFWwindow* Window){
 	m_window = Window;
 	m_shader = std::make_unique<Shader>();
+	m_coord = std::make_unique<Coord>();
 	m_camera = std::make_unique<Camera>(m_window, m_shader->GetShaderID(), glm::vec3(0.f, 0.f, 10.f), 0.1f, 1000.f);
 }
 
@@ -137,7 +138,7 @@ void Renderer::Load(std::string path){
 void Renderer::Render(){
 
 	m_camera->Render(m_shader->GetShaderID());
-
+	m_coord->Render(m_shader->GetShaderID());
 	for (auto& i : m_modelList) {
 		i->Render(m_shader->GetShaderID());
 	}
@@ -147,7 +148,7 @@ void Renderer::Render(){
 void Renderer::Update(float dt){
 
 	m_camera->Update(dt);
-
+	
 	for (auto& i : m_modelList) {
 		i->Update(dt);
 	}

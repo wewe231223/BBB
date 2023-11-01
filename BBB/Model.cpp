@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Model.h"
+#include "Input.h"
 
 Model::Model(UINT sid,UINT Vao, size_t VertexCount)
 {
@@ -19,6 +20,8 @@ Model& Model::operator=(const Model& other)
 }
 
 void Model::Render(UINT sid){
+
+    
 
 
     glEnable(GL_DEPTH_TEST);
@@ -54,4 +57,7 @@ void Model::Render(UINT sid){
 }
 
 void Model::Update(float dt){
+    if (Input::GetInstance()->GetKey(GLFW_KEY_RIGHT) == KEY_STATE::PRESS) {
+        m_position.x += dt;
+    }
 }

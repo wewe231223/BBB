@@ -7,6 +7,9 @@ enum class Qualifier {
 	PARENT
 };
 
+enum class Animation_Input {
+	Rotate
+};
 
 
 
@@ -36,6 +39,9 @@ private:
 	glm::vec3 m_position{0.f};
 	glm::vec3 m_rotation{0.f};
 	float3 m_scale{1.f,1.f,1.f};
+
+
+	
 
 	std::shared_ptr<Model> m_parent{nullptr};
 

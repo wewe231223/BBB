@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "Camera.h"
+#include "Coord.h"
 
 
 
@@ -25,6 +26,7 @@ private:
 
 	std::unique_ptr<Shader> m_shader{ nullptr };
 	std::unique_ptr<Camera> m_camera{ nullptr };
+	std::unique_ptr<Coord> m_coord{ nullptr };
 
 public:
 	
