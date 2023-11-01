@@ -2,6 +2,9 @@
 #include "Renderer.h"
 #pragma warning(disable: 4002)
 
+
+#include "Tank.h"
+
 Renderer::Renderer(GLFWwindow* Window){
 	m_window = Window;
 	m_shader = std::make_unique<Shader>();
@@ -69,6 +72,27 @@ void Renderer::Load(std::string path){
 
 
 		}
+
+		if (head._Equal("Object")) {
+
+			std::string objectName, meshName{};
+
+			file >> objectName >> meshName;
+
+			auto iter = m_meshDict.find(meshName);
+			assert(!(iter == m_meshDict.end()), __FILE__, __LINE__);
+
+
+			if (objectName._Equal("Tank")) {
+				m_objectList.push_back(std::make_unique<Tank>(m_shader->GetShaderID(), iter->second));
+			}
+			else {
+				std::cerr << objectName << " : Not Found" << std::endl;
+			}
+
+
+		}
+
 
 		if (head._Equal("->Position")) {
 
@@ -140,6 +164,10 @@ void Renderer::Render(){
 	m_camera->Render(m_shader->GetShaderID());
 	m_coord->Render(m_shader->GetShaderID());
 	for (auto& i : m_modelList) {
+		i->Render(m_shader->GetShaderID());
+	}
+
+	for (auto& i : m_objectList) {
 		i->Render(m_shader->GetShaderID());
 	}
 

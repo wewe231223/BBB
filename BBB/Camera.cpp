@@ -53,6 +53,18 @@ void Camera::Update(float dt){
 		m_eye += m_basisX * dt;
 	}
 
+	if (Input::GetInstance()->GetKey(GLFW_KEY_Q) == KEY_STATE::PRESS) {
+		m_eye -= m_basisY * dt;
+
+	}
+
+
+	if (Input::GetInstance()->GetKey(GLFW_KEY_E) == KEY_STATE::PRESS) {
+		m_eye += m_basisY * dt;
+
+	}
+
+
 	float2 deltaMouse = Input::GetInstance()->GetDeltaMouse();
 
 	if (!(deltaMouse.x == 0 and deltaMouse.y == 0)) {

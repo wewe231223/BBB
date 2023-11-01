@@ -23,10 +23,14 @@ private:
 
 	std::map<std::string,std::shared_ptr<Mesh>> m_meshDict{};
 	std::vector<std::shared_ptr<Model>> m_modelList{};
-
+	std::vector<std::unique_ptr<Object>> m_objectList{};
+	
+	
 	std::unique_ptr<Shader> m_shader{ nullptr };
 	std::unique_ptr<Camera> m_camera{ nullptr };
 	std::unique_ptr<Coord> m_coord{ nullptr };
+
+
 
 public:
 	

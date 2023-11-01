@@ -11,7 +11,11 @@ enum class Animation_Input {
 	Rotate
 };
 
-
+class Object abstract{
+public:
+	virtual void Render(UINT sid) = 0;
+	virtual void Update(float dt) = 0;
+};
 
 class Model {
 public:
