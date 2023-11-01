@@ -44,8 +44,7 @@ private:
 	glm::vec3 m_rotation{0.f};
 	float3 m_scale{1.f,1.f,1.f};
 
-
-	
+	glm::vec3 m_rotateDir{ 0.f,0.f,0.f };
 
 	std::shared_ptr<Model> m_parent{nullptr};
 
@@ -68,11 +67,14 @@ public:
 	void Set(std::shared_ptr<Model> Src, Qualifier Qualify) { m_parent = Src; }
 
 
-
+	
 
 
 	glm::mat4 GetMatrix() { return m_transform; }
 	std::shared_ptr<Model> GetParent() { return m_parent; }
+
+
+	void Rotate(glm::vec3 rotation) { m_rotation += rotation; }
 
 };
 	

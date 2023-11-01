@@ -28,25 +28,37 @@ void Model::Render(UINT sid){
     glEnable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    glm::mat4 Trans{ 1.f };
+    
+   // glm::mat4 Transform = glm::translate(glm::mat4{1.f},glm::vec3(-4.f, 0.f, 0.f));
+    glm::mat4 Transform{ 1.f };
 
-    Trans = glm::translate(Trans, m_position);
-    Trans = glm::scale(Trans, glm::vec3(m_scale.x,m_scale.y,m_scale.z));
-    Trans = glm::rotate(Trans, glm::radians(m_rotation.x), glm::vec3(1.f, 0.f, 0.f));
-    Trans = glm::rotate(Trans, glm::radians(m_rotation.y), glm::vec3(0.f, 1.f, 0.f));
-    Trans = glm::rotate(Trans, glm::radians(m_rotation.z), glm::vec3(0.f, 0.f, 1.f));
+    
+    
+    Transform = glm::translate(Transform, glm::vec3(0.f,0.f, m_scale.z / 2.f));
+
+    Transform = glm::rotate(Transform, glm::radians(m_rotation.x), glm::vec3(1.f, 0.f, 0.f));
+    Transform = glm::rotate(Transform, glm::radians(m_rotation.y), glm::vec3(0.f, 1.f, 0.f));
+    Transform = glm::rotate(Transform, glm::radians(m_rotation.z), glm::vec3(0.f, 0.f, 1.f));
+
+  //  Transform = glm::translate(Transform, glm::vec3(10.f, 10.f, 4.f));
 
 
+//Transform = glm::translate(Transform, glm::vec3(10.f, 0.f, 0.f));
+
+   // Transform = glm::translate(Transform, m_position);
+
+   
+
+   
     if (m_parent != nullptr) {
-        Trans = m_parent->GetMatrix() * Trans;
+        //Transform = m_parent->GetMatrix() * Transform;
     }
 
 
-    m_transform = Trans;
+    m_transform = Transform;
+    Transform = glm::scale(Transform, glm::vec3(m_scale.x, m_scale.y, m_scale.z));
 
-
-
-    glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(Trans));
+    glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(Transform));
     glBindVertexArray(m_vao);
    
     glUseProgram(sid);
@@ -57,7 +69,5 @@ void Model::Render(UINT sid){
 }
 
 void Model::Update(float dt){
-    if (Input::GetInstance()->GetKey(GLFW_KEY_RIGHT) == KEY_STATE::PRESS) {
-        m_position.x += dt;
-    }
+    
 }

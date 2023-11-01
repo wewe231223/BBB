@@ -21,7 +21,7 @@ Coord::Coord(){
 
 		color1.x, color1.y, color1.z,
 		color4.x, color4.y, color4.z,
-		color2.x, color2.y, color4.z
+		color2.x, color2.y, color2.z
 
 	};
 
@@ -67,6 +67,28 @@ Coord::Coord(){
 	glEnableVertexAttribArray(1);
 
 
+	UINT lvbo[2];
+	glGenVertexArrays(1,&m_vaoLine);
+	glBindVertexArray(m_vaoLine);
+	
+	glGenBuffers(2, lvbo);
+	glBindBuffer(GL_ARRAY_BUFFER, lvbo[0]);
+	
+	
+
+
+	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(float), Line, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, lvbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(float), LineColor, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
+
 
 
 
@@ -89,4 +111,6 @@ void Coord::Render(UINT sid){
 	glBindVertexArray(m_vaoXZ);
 	glDrawArrays(GL_TRIANGLES, 0, 18);
 
+	glBindVertexArray(m_vaoLine);
+	glDrawArrays(GL_LINES, 0, 18);
 }

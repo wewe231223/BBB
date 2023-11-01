@@ -181,6 +181,10 @@ void Renderer::Update(float dt){
 		i->Update(dt);
 	}
 
+	for (auto& i : m_objectList) {
+		i->Update(dt);
+	}
+
 
 }
 

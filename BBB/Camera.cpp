@@ -35,32 +35,32 @@ void Camera::Update(float dt){
 
 	
 	if (Input::GetInstance()->GetKey(GLFW_KEY_W) == KEY_STATE::PRESS) {
-		m_eye -= m_basisZ * dt;
+		m_eye -= m_basisZ * dt * 5.f;
 	}
 
 
 	if (Input::GetInstance()->GetKey(GLFW_KEY_S) == KEY_STATE::PRESS) {
-		m_eye += m_basisZ * dt;
+		m_eye += m_basisZ * dt * 5.f;
 	}
 
 
 	if (Input::GetInstance()->GetKey(GLFW_KEY_A) == KEY_STATE::PRESS) {
-		m_eye -= m_basisX * dt;
+		m_eye -= m_basisX * dt * 5.f;
 	}
 
 
 	if (Input::GetInstance()->GetKey(GLFW_KEY_D) == KEY_STATE::PRESS) {
-		m_eye += m_basisX * dt;
+		m_eye += m_basisX * dt * 5.f;
 	}
 
 	if (Input::GetInstance()->GetKey(GLFW_KEY_Q) == KEY_STATE::PRESS) {
-		m_eye -= m_basisY * dt;
+		m_eye -= m_basisY * dt * 5.f;
 
 	}
 
 
 	if (Input::GetInstance()->GetKey(GLFW_KEY_E) == KEY_STATE::PRESS) {
-		m_eye += m_basisY * dt;
+		m_eye += m_basisY * dt * 5.f;
 
 	}
 
