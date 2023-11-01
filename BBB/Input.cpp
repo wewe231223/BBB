@@ -73,6 +73,15 @@ void Input::Update(){
 				i.first = KEY_STATE::NONE;
 			}
 		}
+
+
+
+		if (i.first == KEY_STATE::DOWN and i.second == GLFW_KEY_ESCAPE) {
+
+			// now, ESCAPE key to end loop
+			glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+		}
+
 	}
 
 	double tx_, ty_;

@@ -34,6 +34,13 @@ void Model::Render(UINT sid){
     Trans = glm::rotate(Trans, glm::radians(m_rotation.z), glm::vec3(0.f, 0.f, 1.f));
 
 
+    if (m_parent != nullptr) {
+        Trans = m_parent->GetMatrix() * Trans;
+    }
+
+
+    m_transform = Trans;
+
 
 
     glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(Trans));

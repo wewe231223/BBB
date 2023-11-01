@@ -1,10 +1,13 @@
 #pragma once
 
-enum class SET_ {
+enum class Qualifier {
 	POSITION,
 	ROTATION,
-	SCALE
+	SCALE,
+	PARENT
 };
+
+
 
 
 class Model {
@@ -34,7 +37,7 @@ private:
 	glm::vec3 m_rotation{0.f};
 	float3 m_scale{1.f,1.f,1.f};
 
-	Model* m_parent{nullptr};
+	std::shared_ptr<Model> m_parent{nullptr};
 
 public:
 
@@ -43,17 +46,23 @@ public:
 	void Update(float dt);
 
 	template<typename T,typename Q>
-	void Set(T Src,Q Qualifier) {};
+	void Set(T Src,Q Qualify) {};
 
 	template<>
-	void Set(const glm::vec3 Src, SET_ Qualifier) { if (Qualifier == SET_::POSITION) { m_position = Src; } else { m_rotation = Src; } };
+	void Set(const glm::vec3 Src, Qualifier Qualify) { if (Qualify == Qualifier::POSITION) { m_position = Src; } else { m_rotation = Src; } };
 
 	template<>
-	void Set(const float3 Src, SET_ Qualifier) { m_scale = Src; }
+	void Set(float3 Src, Qualifier Qualify) { m_scale = Src; }
 
 	template<>
-	void Set(Model* Src, SET_ Qualifier) { m_parent = Src; }
+	void Set(std::shared_ptr<Model> Src, Qualifier Qualify) { m_parent = Src; }
 
+
+
+
+
+	glm::mat4 GetMatrix() { return m_transform; }
+	std::shared_ptr<Model> GetParent() { return m_parent; }
 
 };
 	

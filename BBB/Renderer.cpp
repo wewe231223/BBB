@@ -11,9 +11,10 @@ Renderer::Renderer(GLFWwindow* Window){
 void Renderer::Load(std::string path){
 
 	// teminate old renderer 
-	std::vector<Model>().swap(m_modelList);
+	std::vector<std::shared_ptr<Model>>().swap(m_modelList);
 	std::map<std::string, std::shared_ptr<Mesh>>().swap(m_meshDict);
 
+	std::shared_ptr<Model> parent = nullptr;
 
 	const char* cpath = path.c_str();
 	//Load Scene
@@ -29,9 +30,8 @@ void Renderer::Load(std::string path){
 
 
 	while (!file.eof()) {
-
+		head.clear();
 		file >> head;
-
 		if (head._Equal("Mesh")) {
 			std::string meshPath,meshName{};
 
@@ -51,7 +51,15 @@ void Renderer::Load(std::string path){
 
 				assert(!(iter == m_meshDict.end()), __FILE__, __LINE__);
 
-				Model m(m_shader->GetShaderID(), iter->second->GetMesh(), iter->second->GetVertexCount());
+
+
+
+				std::shared_ptr<Model> m = std::make_shared<Model>(m_shader->GetShaderID(), iter->second->GetMesh(), iter->second->GetVertexCount());
+
+				if (parent != nullptr) {
+					m->Set(parent, Qualifier::PARENT);
+				}
+
 				m_modelList.push_back(m);
 
 			}
@@ -71,7 +79,7 @@ void Renderer::Load(std::string path){
 			assert(m_modelList.size() != 0, __FILE__, __LINE__);
 
 
-			m_modelList.back().Set(pos, SET_::POSITION);
+			m_modelList.back()->Set(pos, Qualifier::POSITION);
 
 
 
@@ -86,7 +94,7 @@ void Renderer::Load(std::string path){
 			assert(m_modelList.size() != 0, __FILE__, __LINE__);
 
 
-			m_modelList.back().Set(rot, SET_::ROTATION);
+			m_modelList.back()->Set(rot, Qualifier::ROTATION);
 
 
 
@@ -94,17 +102,29 @@ void Renderer::Load(std::string path){
 
 		if (head._Equal("->Scale")) {
 
-			float3 scale{};
+			float3 scale{0.f,0.f,0.f};
 
 
 			file >> scale.x >> scale.y >> scale.z;
 
+
 			assert(m_modelList.size() != 0, __FILE__, __LINE__);
 
-			m_modelList.back().Set(scale, SET_::SCALE);
+
+		
+			m_modelList.back()->Set(scale, Qualifier::SCALE);
 
 		}
 
+		if (head._Equal("{")) {
+			parent = m_modelList.back();
+		}
+
+		if (head._Equal("}")) {
+			if (parent != nullptr) {
+				parent = parent->GetParent();
+			}
+		}
 
 
 	}
@@ -119,7 +139,7 @@ void Renderer::Render(){
 	m_camera->Render(m_shader->GetShaderID());
 
 	for (auto& i : m_modelList) {
-		i.Render(m_shader->GetShaderID());
+		i->Render(m_shader->GetShaderID());
 	}
 
 }
@@ -129,7 +149,7 @@ void Renderer::Update(float dt){
 	m_camera->Update(dt);
 
 	for (auto& i : m_modelList) {
-		i.Update(dt);
+		i->Update(dt);
 	}
 
 
