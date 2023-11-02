@@ -19,6 +19,80 @@ Model& Model::operator=(const Model& other)
     // TODO: 여기에 return 문을 삽입합니다.
 }
 
+template<>
+void Model::Set(const glm::vec3 Src, Qualifier Qualify)
+{
+
+
+    switch (Qualify)
+    {
+    case Qualifier::POSITION:
+        m_position = Src;
+
+        break;
+    case Qualifier::PIVOT:
+
+        m_pivot = Src;
+
+        break;
+    case Qualifier::ROTATION:
+
+        
+
+
+        m_rotation = Src;
+        break;
+    case Qualifier::MAX_ROTATION:
+        m_max_Rotation = glm::radians(Src);
+        break;
+    case Qualifier::MIN_ROTATION:
+        m_min_Rotation = glm::radians(Src);
+        break;
+    default:
+        break;
+    }
+
+
+}
+
+
+template<>
+void Model::Set(float3 Src, Qualifier Qualify){
+
+    if (m_parent == nullptr) {
+        m_scale = Src;
+        return;
+    }
+    std::shared_ptr<Model> parent = m_parent;
+
+
+    float parentScaleX{1.f};
+    float parentScaleY{1.f};
+    float parentScaleZ{1.f};
+
+    float3 parentScale{0.f,};
+
+    do{
+       parentScale = parent->GetScale();
+       parentScaleX *= parentScale.x;
+       parentScaleY *= parentScale.y;
+       parentScaleZ *= parentScale.z;
+
+
+        parent = parent->GetParent();
+    } while (parent != nullptr);
+
+
+
+
+    float unitScaleX = 1.f / parentScaleX;
+    float unitScaleY = 1.f / parentScaleY;
+    float unitScaleZ = 1.f / parentScaleZ;
+
+
+
+    m_scale = float3{ unitScaleX * Src.x , unitScaleY * Src.y, unitScaleZ * Src.z };
+}
 void Model::Render(UINT sid){
 
     
@@ -29,36 +103,59 @@ void Model::Render(UINT sid){
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     
-   // glm::mat4 Transform = glm::translate(glm::mat4{1.f},glm::vec3(-4.f, 0.f, 0.f));
-    glm::mat4 Transform{ 1.f };
+    glm::mat4 inittrans = glm::translate(glm::mat4{ 1.f }, m_pivot);
+
 
     
+    m_transMatrix = glm::translate(glm::mat4{ 1.f }, m_position);
     
-    Transform = glm::translate(Transform, glm::vec3(0.f,0.f, m_scale.z / 2.f));
+    
 
-    Transform = glm::rotate(Transform, glm::radians(m_rotation.x), glm::vec3(1.f, 0.f, 0.f));
-    Transform = glm::rotate(Transform, glm::radians(m_rotation.y), glm::vec3(0.f, 1.f, 0.f));
-    Transform = glm::rotate(Transform, glm::radians(m_rotation.z), glm::vec3(0.f, 0.f, 1.f));
-
-  //  Transform = glm::translate(Transform, glm::vec3(10.f, 10.f, 4.f));
+    m_rotation.x = std::clamp(m_rotation.x, m_min_Rotation.x, m_max_Rotation.x);
+    m_rotation.y = std::clamp(m_rotation.y, m_min_Rotation.y, m_max_Rotation.y);
+    m_rotation.z = std::clamp(m_rotation.z, m_min_Rotation.z, m_max_Rotation.z);
 
 
-//Transform = glm::translate(Transform, glm::vec3(10.f, 0.f, 0.f));
 
-   // Transform = glm::translate(Transform, m_position);
 
-   
+    m_rotationMatrix = glm::yawPitchRoll(m_rotation.y,m_rotation.x, m_rotation.z);
 
-   
+
+
+    m_scaleMatrix = glm::scale(glm::mat4{1.f},glm::vec3{m_scale.x , m_scale.y, m_scale.z});
+
+
+
+
+    
+
+
+    m_WorldMatrix = m_transMatrix * m_rotationMatrix * m_scaleMatrix;
+
+
+
+    glm::mat4 finalMatrix = glm::mat4{ 1.f };
+    glm::mat4 parentMatrix = glm::mat4{ 1.f };
+
     if (m_parent != nullptr) {
-        //Transform = m_parent->GetMatrix() * Transform;
+            
+
+        m_WorldMatrix = m_parent->GetWorldMat() * m_WorldMatrix;
+        //m_transMatrix *= m_parent->GetTransMat();
+        //m_rotationMatrix *= m_parent->GetRotMat();
+        //m_scaleMatrix *= m_parent->GetScaleMat();
+
     }
+  
+
+    
 
 
-    m_transform = Transform;
-    Transform = glm::scale(Transform, glm::vec3(m_scale.x, m_scale.y, m_scale.z));
+    finalMatrix = m_WorldMatrix * inittrans;
+    
 
-    glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(Transform));
+
+    glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(finalMatrix));
     glBindVertexArray(m_vao);
    
     glUseProgram(sid);
@@ -69,5 +166,8 @@ void Model::Render(UINT sid){
 }
 
 void Model::Update(float dt){
+
+
+    m_rotation += glm::radians( m_rotateDir * dt );
     
 }

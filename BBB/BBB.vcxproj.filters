@@ -54,6 +54,9 @@
     <ClCompile Include="Coord.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -89,12 +92,18 @@
     <ClInclude Include="Coord.h">
       <Filter>Header File</Filter>
     </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Object Include="teapot.obj">
       <Filter>Resources File</Filter>
     </Object>
     <Object Include="sphere.obj">
+      <Filter>Resources File</Filter>
+    </Object>
+    <Object Include="cube.obj">
       <Filter>Resources File</Filter>
     </Object>
   </ItemGroup>

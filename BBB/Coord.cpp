@@ -6,10 +6,10 @@
 
 Coord::Coord(){
 
-	float3 color1 = Random::Rand(float3{ 0.f,0.f,0.f }, float3{ 1.f,1.f,1.f });
-	float3 color2 = Random::Rand(float3{ 0.f,0.f,0.f }, float3{ 1.f,1.f,1.f });
-	float3 color3 = Random::Rand(float3{ 0.f,0.f,0.f }, float3{ 1.f,1.f,1.f });
-	float3 color4 = Random::Rand(float3{ 0.f,0.f,0.f }, float3{ 1.f,1.f,1.f });
+	float3 color1 = Random::Rand(float3{ 0.2f,0.2f,0.2f }, float3{ 0.7f,0.7f,0.7f });
+	float3 color2 = Random::Rand(float3{ 0.2f,0.2f,0.2f }, float3{ 0.7f,0.7f,0.7f });
+	float3 color3 = Random::Rand(float3{ 0.2f,0.2f,0.2f }, float3{ 0.7f,0.7f,0.7f });
+	float3 color4 = Random::Rand(float3{ 0.2f,0.2f,0.2f }, float3{ 0.7f,0.7f,0.7f });
 
 
 

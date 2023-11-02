@@ -17,6 +17,9 @@ void Engine::Init() {
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 
 
+	
+
+
 	// 윈도우 정보 초기 설정
 	m_windowInfo.width = 1920;
 	m_windowInfo.height = 1080;
@@ -31,8 +34,18 @@ void Engine::Init() {
 		exit(-1);
 	}
 
+
+
 	// 생성한 윈도우를 현재 메인 윈도우로 설정
 	glfwMakeContextCurrent(m_windowInfo.window);
+
+
+
+
+//	m_windowInfo.win32Window = glfwGetWin32Window(m_windowInfo.window);
+
+	
+
 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
@@ -81,10 +94,16 @@ void Engine::LateUpdate() {
 
 void Engine::Render() {
 	//// 렌더링 코드
-	glClearColor(0.f,0.f,0.f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+
+
+
+
 	m_renderer->Render();
+
 	glfwSwapBuffers(m_windowInfo.window);
 	
 }

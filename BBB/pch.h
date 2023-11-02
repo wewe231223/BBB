@@ -9,6 +9,10 @@
 // OpenGL 헤더 파일들 추가
 #include <gl/glew.h>
 #include <gl/glfw3.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#define GLFW_NATIVE_INCLUDE_NONE
+#include <gl/glfw3native.h>
 #include <gl/glm/glm.hpp>
 #include <gl/glm/ext.hpp>
 #include <gl/glm/gtc/matrix_transform.hpp>
@@ -36,6 +40,7 @@ using uint64 = unsigned __int64;
 
 struct _TAG_WINDOWINFO {
 	GLFWwindow* window{ };
+	HWND		win32Window{};
 	int32		x{ };
 	int32		y{ };
 	int32		width{ };
