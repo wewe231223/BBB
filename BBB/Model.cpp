@@ -119,18 +119,14 @@ void Model::Render(UINT sid){
 
 
     m_rotationMatrix = glm::yawPitchRoll(m_rotation.y,m_rotation.x, m_rotation.z);
-
-
-
-    m_scaleMatrix = glm::scale(glm::mat4{1.f},glm::vec3{m_scale.x , m_scale.y, m_scale.z});
-
+    m_scaleMatrix = glm::scale(glm::mat4{1.f},glm::vec3{m_scale.x,m_scale.y, m_scale.z});
 
 
 
     
 
 
-    m_WorldMatrix = m_transMatrix * m_rotationMatrix * m_scaleMatrix;
+    m_WorldMatrix = m_transMatrix * m_rotationMatrix;
 
 
 
@@ -138,20 +134,15 @@ void Model::Render(UINT sid){
     glm::mat4 parentMatrix = glm::mat4{ 1.f };
 
     if (m_parent != nullptr) {
-            
-
+        m_scaleMatrix = m_parent->GetScaleMat() * m_scaleMatrix;
         m_WorldMatrix = m_parent->GetWorldMat() * m_WorldMatrix;
-        //m_transMatrix *= m_parent->GetTransMat();
-        //m_rotationMatrix *= m_parent->GetRotMat();
-        //m_scaleMatrix *= m_parent->GetScaleMat();
 
     }
   
 
-    
 
 
-    finalMatrix = m_WorldMatrix * inittrans;
+    finalMatrix = m_WorldMatrix * m_scaleMatrix * inittrans;
     
 
 
