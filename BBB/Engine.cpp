@@ -101,7 +101,7 @@ void Engine::Render() {
 
 
 
-
+	glViewport(100, 100, 100, 100);
 	m_renderer->Render();
 
 	glfwSwapBuffers(m_windowInfo.window);
