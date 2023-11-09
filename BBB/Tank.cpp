@@ -34,28 +34,27 @@ Tank::Tank(UINT sid, std::shared_ptr<Mesh> mesh){
 	m_mainBody->Set(glm::vec3(0.f, 10.f, 0.f), Qualifier::POSITION);
 	m_mainBody->Set(glm::vec3(0.f, 0.f, 0.f), Qualifier::ROTATION);
 	m_mainBody->Set(glm::vec3(0.f, 0.5f, 0.f),Qualifier::PIVOT);
-	m_mainBody->Set(float3{ 15.f,5.f,15.f }, Qualifier::SCALE);
+	m_mainBody->Set(glm::vec3{ 15.f,5.f,15.f }, Qualifier::SCALE);
 
 
 
 	
-	m_firstHand1->Set(glm::vec3(7.5f, 2.5f,6.f), Qualifier::POSITION);
+	m_firstHand1->Set(glm::vec3(0.5f, 0.5f,0.4f), Qualifier::POSITION);
 	m_firstHand1->Set(glm::vec3(0.f, 90.f, 0.f), Qualifier::MAX_ROTATION);
 	m_firstHand1->Set(glm::vec3(0.f, -90.f, 0.f), Qualifier::MIN_ROTATION);
 	m_firstHand1->Set(glm::vec3(0.5f, 0.f, 0.f),Qualifier::PIVOT);
-	m_firstHand1->Set(float3{ 5.f,1.f,1.f }, Qualifier::SCALE);
+	m_firstHand1->Set(glm::vec3{ 5.f,1.f,1.f }, Qualifier::SCALE);
 
 
 
 
 
 
-
-	m_firstHand2->Set(glm::vec3(7.5f, 2.5f, -6.f), Qualifier::POSITION);
+	m_firstHand2->Set(glm::vec3(0.5f, 0.5f, -0.4f), Qualifier::POSITION);
 	m_firstHand2->Set(glm::vec3(0.f, 90.f, 0.f), Qualifier::MAX_ROTATION);
 	m_firstHand2->Set(glm::vec3(0.f, -90.f, 0.f), Qualifier::MIN_ROTATION);
 	m_firstHand2->Set(glm::vec3(0.5f, 0.f, 0.f), Qualifier::PIVOT);
-	m_firstHand2->Set(float3{ 5.f,1.f,1.f }, Qualifier::SCALE);
+	m_firstHand2->Set(glm::vec3{ 5.f,1.f,1.f }, Qualifier::SCALE);
 
 
 
@@ -64,15 +63,15 @@ Tank::Tank(UINT sid, std::shared_ptr<Mesh> mesh){
 
 
 
-	m_subBody1->Set(glm::vec3{ 0.f,5.f,0.f }, Qualifier::POSITION);
-	m_subBody1->Set(float3{ 10.f,3.f,10.f }, Qualifier::SCALE);
+	m_subBody1->Set(glm::vec3{ 0.f,1.f,0.f }, Qualifier::POSITION);
+	m_subBody1->Set(glm::vec3{ 10.f,3.f,10.f }, Qualifier::SCALE);
 	m_subBody1->Set(glm::vec3(0.f, 0.5f, 0.f), Qualifier::PIVOT);
 
 
 
 
-	m_secondHand1->Set(glm::vec3{ 0.f,2.5f,3.f }, Qualifier::POSITION);
-	m_secondHand1->Set(float3{ 1.f,5.f,1.f }, Qualifier::SCALE);
+	m_secondHand1->Set(glm::vec3{ 0.f,1.f,0.4f }, Qualifier::POSITION);
+	m_secondHand1->Set(glm::vec3{ 1.f,5.f,1.f }, Qualifier::SCALE);
 	m_secondHand1->Set(glm::vec3(0.f, 0.5f, 0.f), Qualifier::PIVOT);
 	m_secondHand1->Set(glm::vec3(90.f, 90.f, 0.f), Qualifier::MAX_ROTATION);
 	m_secondHand1->Set(glm::vec3(-90.f, -90.f, 0.f), Qualifier::MIN_ROTATION);
@@ -83,11 +82,8 @@ Tank::Tank(UINT sid, std::shared_ptr<Mesh> mesh){
 
 
 
-
-
-
-	m_secondHand2->Set(glm::vec3{ 0.f,2.5f,-3.f }, Qualifier::POSITION);
-	m_secondHand2->Set(float3{ 1.f,5.f,1.f }, Qualifier::SCALE);
+	m_secondHand2->Set(glm::vec3{ 0.f,1.f,-0.4f }, Qualifier::POSITION);
+	m_secondHand2->Set(glm::vec3{ 1.f,5.f,1.f }, Qualifier::SCALE);
 	m_secondHand2->Set(glm::vec3(0.f, 0.5f, 0.f), Qualifier::PIVOT);
 	m_secondHand2->Set(glm::vec3(90.f, 90.f, 0.f), Qualifier::MAX_ROTATION);
 	m_secondHand2->Set(glm::vec3(-90.f, -90.f, 0.f), Qualifier::MIN_ROTATION);
@@ -117,6 +113,9 @@ void Tank::Render(UINT sid){
 }
 
 void Tank::Update(float dt){
+	if (Input::GetInstance()->GetKey(GLFW_KEY_U) == KEY_STATE::DOWN) {
+		m_mainBody->Shrink();
+	}
 
 	if (Input::GetInstance()->GetKey(GLFW_KEY_SPACE) == KEY_STATE::DOWN) {
 		m_firstHand1->DelRotate();

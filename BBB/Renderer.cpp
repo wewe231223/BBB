@@ -127,7 +127,7 @@ void Renderer::Load(std::string path){
 
 		if (head._Equal("->Scale")) {
 
-			float3 scale{0.f,0.f,0.f};
+			glm::vec3 scale{0.f,0.f,0.f};
 
 
 			file >> scale.x >> scale.y >> scale.z;
