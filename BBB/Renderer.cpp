@@ -171,6 +171,68 @@ void Renderer::Render(){
 		i->Render(m_shader->GetShaderID());
 	}
 
+	// for # 21 
+	// 
+	// 
+	// 
+	//glViewport(100, 100, 400, 400);
+
+	//m_camera->SetPosition(glm::vec3{ 0.f,100.f,0.f });
+	//m_camera->SetFocus(glm::vec3{0.f,0.f,-1.f});
+
+	//
+
+	//
+	//m_camera->Render(m_shader->GetShaderID());
+	//m_coord->Render(m_shader->GetShaderID());
+	//for (auto& i : m_modelList) {
+	//	i->Render(m_shader->GetShaderID());
+	//}
+
+	//for (auto& i : m_objectList) {
+	//	i->Render(m_shader->GetShaderID());
+	//}
+
+
+
+	//glViewport(100, 500, 400, 400);
+	//m_camera->SetPosition(glm::vec3{ 0.f,0.f,-100.f });
+	//m_camera->SetFocus(glm::vec3{ -1.f,0.f,0.f });
+
+
+
+
+	//m_camera->Render(m_shader->GetShaderID());
+	//m_coord->Render(m_shader->GetShaderID());
+	//for (auto& i : m_modelList) {
+	//	i->Render(m_shader->GetShaderID());
+	//}
+
+	//for (auto& i : m_objectList) {
+	//	i->Render(m_shader->GetShaderID());
+	//}
+
+
+
+	//glViewport(500, 100, 800, 800);
+
+	//m_camera->SetPosition(glm::vec3(100, 100, 100));
+	//m_camera->SetFocus(glm::vec3{ 0.f,-1.f,0.f });
+
+
+
+	//m_camera->Render(m_shader->GetShaderID());
+	//m_coord->Render(m_shader->GetShaderID());
+	//for (auto& i : m_modelList) {
+	//	i->Render(m_shader->GetShaderID());
+	//}
+
+	//for (auto& i : m_objectList) {
+	//	i->Render(m_shader->GetShaderID());
+	//}
+
+
+
 }
 
 void Renderer::Update(float dt){

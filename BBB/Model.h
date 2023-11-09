@@ -48,7 +48,7 @@ private:
 	
 	
 	glm::mat4 m_transMatrix{ 1.f };
-	glm::mat4 m_rotationMatrix{0.f};
+	glm::mat4 m_rotationMatrix{ 1.f };
 	glm::mat4 m_scaleMatrix{ 1.f };
 
 
@@ -56,8 +56,8 @@ private:
 	glm::vec3 m_position{0.f};
 
 	glm::vec3 m_pivot{ 0.f };
-	glm::vec3 m_max_Rotation{ 0.f };
-	glm::vec3 m_min_Rotation{ 0.f };
+	glm::vec3 m_max_Rotation{ 360.f,360.f,360.f };
+	glm::vec3 m_min_Rotation{ -360.f,-360.f,-360.f };
 	glm::vec3 m_rotation{0.f};
 
 	glm::vec3 m_scale{1.f,1.f,1.f};
@@ -103,7 +103,7 @@ public:
 	
 	
 	glm::vec3 GetScale() { return m_scale; }
-
+	glm::vec3 GetPosition() { return m_position;  }
 
 	std::shared_ptr<Model> GetParent() { return m_parent; }
 
@@ -111,6 +111,10 @@ public:
 	void Rotate(glm::vec3 dir) { m_rotateDir = dir; }
 	void DelRotate() { m_rotateDir = glm::vec3{ 0.f }; }
 
+
+	
+	void LinearMove(glm::vec3 P1,glm::vec3 P2,float t);
+	void ScalarMove(glm::vec3 Movement) { m_position += Movement; };
 
 	void Shrink() { m_scale.x -= 1.f; }
 };

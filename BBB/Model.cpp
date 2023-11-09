@@ -125,32 +125,35 @@ void Model::Render(UINT sid){
 
 
         m_transMatrix = glm::translate(UnitMatrix, glm::vec3{m_position * scaleFactor });
-
         m_rotationMatrix = glm::yawPitchRoll(m_rotation.y, m_rotation.z, m_rotation.x);
-
-
         m_scaleMatrix = glm::scale(glm::vec3{ m_scale.x,m_scale.y,m_scale.z });
-
-
-
-        m_transMatrix = m_parent->GetTransMat() * m_transMatrix;
         m_scaleMatrix = m_parent->GetScaleMat() * m_scaleMatrix;
 
-        m_rotationMatrix = m_parent->GetRotMat() * m_rotationMatrix;
+
+        std::shared_ptr<Model> parentptr = m_parent;
+
+        m_WorldMatrix = m_transMatrix * m_rotationMatrix * m_scaleMatrix;
+
+
+        while (parentptr != nullptr) {
+
+            m_WorldMatrix = parentptr->GetTransMat() * parentptr->GetRotMat() * m_WorldMatrix;
+            parentptr = parentptr->GetParent();
+
+        }
 
     }
     else {
-        m_transMatrix = glm::translate(UnitMatrix, m_position ) ;
+        m_transMatrix = glm::translate(UnitMatrix, m_position );
 
         m_rotationMatrix = glm::yawPitchRoll(m_rotation.y, m_rotation.z, m_rotation.x);
 
 
         m_scaleMatrix = glm::scale(glm::vec3{ m_scale.x,m_scale.y,m_scale.z });
 
-
+        m_WorldMatrix = m_transMatrix * m_rotationMatrix * m_scaleMatrix;
     }
 
-    m_WorldMatrix = m_transMatrix * m_rotationMatrix  * m_scaleMatrix;
 
     glm::mat4 finalMatrix =  m_WorldMatrix * inittrans;
 
@@ -176,3 +179,11 @@ void Model::Update(float dt){
     m_rotation += glm::radians( m_rotateDir * dt );
     
 }
+
+
+
+void Model::LinearMove(glm::vec3 P1, glm::vec3 P2, float t){
+
+    m_position = (1.f - t) * P1 + t * P2;
+}
+

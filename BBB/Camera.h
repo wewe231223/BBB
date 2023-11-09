@@ -39,6 +39,9 @@ private:
 
 public:
 
+	void SetPosition(glm::vec3 Pos) { m_eye = Pos; }
+	void SetFocus(glm::vec3 At) { m_at = -m_eye + At; }
+
 
 	void Update(float dt);
 	void Render(UINT sid);

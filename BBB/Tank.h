@@ -18,6 +18,16 @@ private:
 	std::unique_ptr<Model> m_secondHand2{ nullptr };
 
 
+	float t{};
+	float t_dir = 1.f;
+
+
+	glm::vec3 m_firsthand1_P1{};
+	glm::vec3 m_firsthand2_P1{};
+
+	glm::vec3 m_firsthand1_P2{};
+	glm::vec3 m_firsthand2_P2{};
+
 
 
 public:
