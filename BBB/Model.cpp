@@ -99,7 +99,6 @@ void Model::Render(UINT sid){
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glPolygonMode(GL_FRONT_AND_BACK, m_renderMode);
 
 
     glm::mat4 inittrans = glm::translate(glm::mat4{ 1.f }, m_pivot);
@@ -123,7 +122,7 @@ void Model::Render(UINT sid){
 
 
 
-        m_transMatrix = glm::translate(UnitMatrix, glm::vec3{ m_position * scaleFactor });
+        m_transMatrix = glm::translate(UnitMatrix, glm::vec3{ m_position * scaleFactor  });
         m_rotationMatrix = glm::yawPitchRoll(m_rotation.y, m_rotation.z, m_rotation.x);
         m_scaleMatrix = glm::scale(glm::vec3{ m_scale.x,m_scale.y,m_scale.z });
         m_scaleMatrix = m_parent->GetScaleMat() * m_scaleMatrix;

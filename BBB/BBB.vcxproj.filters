@@ -57,6 +57,9 @@
     <ClCompile Include="Tank.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
+    <ClCompile Include="Robot.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -95,6 +98,9 @@
     <ClInclude Include="Tank.h">
       <Filter>Header File</Filter>
     </ClInclude>
+    <ClInclude Include="Robot.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Object Include="teapot.obj">
@@ -115,6 +121,9 @@
       <Filter>Shader File</Filter>
     </None>
     <None Include="Scene1.properties">
+      <Filter>Resources File</Filter>
+    </None>
+    <None Include="Scene2.properties">
       <Filter>Resources File</Filter>
     </None>
   </ItemGroup>

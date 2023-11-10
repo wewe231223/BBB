@@ -74,7 +74,7 @@ void Engine::Init() {
 
 	//load scene 
 
-	m_renderer->Load("Scene1.properties");
+	m_renderer->Load("Scene2.properties");
 }
 
 void Engine::Update() {

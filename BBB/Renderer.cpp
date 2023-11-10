@@ -4,6 +4,7 @@
 
 
 #include "Tank.h"
+#include "Robot.h"
 
 Renderer::Renderer(GLFWwindow* Window){
 	m_window = Window;
@@ -85,6 +86,9 @@ void Renderer::Load(std::string path){
 
 			if (objectName._Equal("Tank")) {
 				m_objectList.push_back(std::make_unique<Tank>(m_shader->GetShaderID(), iter->second));
+			}
+			else if (objectName._Equal("Robot")) {
+				m_objectList.push_back(std::make_unique<Robot>(m_shader->GetShaderID(), iter->second));
 			}
 			else {
 				std::cerr << objectName << " : Not Found" << std::endl;

@@ -48,7 +48,7 @@ private:
 	
 	
 	glm::mat4 m_transMatrix{ 1.f };
-	glm::mat4 m_rotationMatrix{0.f};
+	glm::mat4 m_rotationMatrix{ 0.f };
 	glm::mat4 m_scaleMatrix{ 1.f };
 
 
@@ -56,9 +56,10 @@ private:
 	glm::vec3 m_position{0.f};
 
 	glm::vec3 m_pivot{ 0.f };
-	glm::vec3 m_max_Rotation{ 0.f };
-	glm::vec3 m_min_Rotation{ 0.f };
+	glm::vec3 m_max_Rotation{ 360.f ,360.f,360.f };
+	glm::vec3 m_min_Rotation{ -360.f , -360.f ,  -360.f };
 	glm::vec3 m_rotation{0.f};
+
 
 	glm::vec3 m_scale{1.f,1.f,1.f};
 
@@ -68,7 +69,6 @@ private:
 	std::shared_ptr<Model> m_parent{nullptr};
 
 
-	GLenum m_renderMode = GL_FILL;
 
 
 public:

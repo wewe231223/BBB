@@ -149,6 +149,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Robot.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Robot.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="Timer.h" />
@@ -185,6 +187,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="Scene1.properties" />
+    <None Include="Scene2.properties" />
     <None Include="Vertex.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </None>
