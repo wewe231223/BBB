@@ -37,7 +37,7 @@ private:
 	bool m_status = Idle;
 
 
-	glm::vec3 m_position{ 10.f,10.f,10.f };
+	glm::vec3 m_position{ 0.f,10.f,0.f };
 
 
 	float3 m_bounding_Box_Left_Bottom{};
@@ -50,7 +50,13 @@ private:
 	float m_swingSpeed = 100.f;
 	float m_movingSpeed = 2.f;
 
+	float m_gravity = 9.8f;
 	float m_Y_Force{};
+	float m_jumpDeltaTime{};
+
+private:
+
+	void HandleInput(glm::vec3& Movement,float dt);
 
 
 public:
