@@ -5,6 +5,7 @@
 
 #include "Tank.h"
 #include "Robot.h"
+#include "box.h"
 
 Renderer::Renderer(GLFWwindow* Window){
 	m_window = Window;
@@ -85,10 +86,12 @@ void Renderer::Load(std::string path){
 
 
 			if (objectName._Equal("Tank")) {
-				m_objectList.push_back(std::make_unique<Tank>(m_shader->GetShaderID(), iter->second));
+				// ÅÊÅ© º¸·ù 
+				//m_objectList.push_back(std::make_shared<Tank>(m_shader->GetShaderID(), iter->second));
 			}
 			else if (objectName._Equal("Robot")) {
-				m_objectList.push_back(std::make_unique<Robot>(m_shader->GetShaderID(), iter->second));
+
+				m_objectList.push_back(std::make_shared<Robot>(m_shader->GetShaderID(), iter->second));
 			}
 			else {
 				std::cerr << objectName << " : Not Found" << std::endl;
@@ -96,7 +99,23 @@ void Renderer::Load(std::string path){
 
 
 		}
+		
+		if (head._Equal("Collide")) {
+			std::string objectName, meshName{};
 
+			file >> objectName >> meshName;
+
+			auto iter = m_meshDict.find(meshName);
+			assert(!(iter == m_meshDict.end()), __FILE__, __LINE__);
+
+			if (objectName._Equal("Box")) {
+				m_objectList.push_back(std::make_shared<Box>(m_shader->GetShaderID(), iter->second));
+				(*(m_objectList.end() - 2))->Add_Collide(m_objectList.back());
+			}
+			
+
+
+		}
 
 		if (head._Equal("->Position")) {
 
@@ -174,6 +193,10 @@ void Renderer::Render(){
 	for (auto& i : m_objectList) {
 		i->Render(m_shader->GetShaderID());
 	}
+
+
+//	RenderCube(m_shader->GetShaderID(), float3{ 50.f,50.f,50.f }, float3{ 100.f,100.f,100.f });
+
 
 }
 

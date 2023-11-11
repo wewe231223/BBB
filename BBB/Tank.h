@@ -3,7 +3,7 @@
 #include "Model.h"
 
 
-class Tank : public Object {
+class Tank : public MonoObject {
 public:
 	Tank(UINT sid, std::shared_ptr<Mesh> mesh);
 
@@ -25,6 +25,7 @@ public:
 	virtual void Render(UINT sid);
 	virtual void Update(float dt);
 
+	virtual std::tuple<float3, float3> Get_Bounding_Box() {};
 
 };
 

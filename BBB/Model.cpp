@@ -78,10 +78,10 @@ void Model::Set(const glm::vec3 Src, Qualifier Qualify)
    }
         break;
     case Qualifier::MAX_ROTATION:
-        m_max_Rotation = glm::radians(Src);
+        m_max_Rotation = Src;
         break;
     case Qualifier::MIN_ROTATION:
-        m_min_Rotation = glm::radians(Src);
+        m_min_Rotation = Src;
         break;
     default:
         break;
@@ -96,6 +96,8 @@ void Model::Set(const glm::vec3 Src, Qualifier Qualify)
 void Model::Render(UINT sid){
 
 
+    glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4{ 0.f }));
+
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -108,6 +110,7 @@ void Model::Render(UINT sid){
 
 
 
+    glm::vec3 rotateFactor = glm::radians(m_rotation);
 
 
 
@@ -121,9 +124,8 @@ void Model::Render(UINT sid){
 
 
 
-
         m_transMatrix = glm::translate(UnitMatrix, glm::vec3{ m_position * scaleFactor  });
-        m_rotationMatrix = glm::yawPitchRoll(m_rotation.y, m_rotation.z, m_rotation.x);
+        m_rotationMatrix = glm::yawPitchRoll(rotateFactor.y, rotateFactor.z, rotateFactor.x);
         m_scaleMatrix = glm::scale(glm::vec3{ m_scale.x,m_scale.y,m_scale.z });
         m_scaleMatrix = m_parent->GetScaleMat() * m_scaleMatrix;
 
@@ -144,7 +146,8 @@ void Model::Render(UINT sid){
     else {
         m_transMatrix = glm::translate(UnitMatrix, m_position);
 
-        m_rotationMatrix = glm::yawPitchRoll(m_rotation.y, m_rotation.z, m_rotation.x);
+        m_rotationMatrix = glm::yawPitchRoll(rotateFactor.y, rotateFactor.z, rotateFactor.x);
+
 
 
         m_scaleMatrix = glm::scale(glm::vec3{ m_scale.x,m_scale.y,m_scale.z });
@@ -163,17 +166,27 @@ void Model::Render(UINT sid){
     glUseProgram(sid);
 
 
-    glDrawElements(GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (GLsizei)m_vertexCount, GL_UNSIGNED_INT, 0);
 
 }
 
 void Model::Update(float dt){
-
     m_rotation.x = std::clamp(m_rotation.x, m_min_Rotation.x, m_max_Rotation.x);
     m_rotation.y = std::clamp(m_rotation.y, m_min_Rotation.y, m_max_Rotation.y);
     m_rotation.z = std::clamp(m_rotation.z, m_min_Rotation.z, m_max_Rotation.z);
 
 
-    m_rotation += glm::radians( m_rotateDir * dt );
+    if (m_rotation == m_max_Rotation) {
+        m_rotate_dir = Negative;
+    }
+    else if (m_rotation == m_min_Rotation) {
+        m_rotate_dir = Positive;
+    }
+
+
+    m_rotation += m_rotate_dir * m_rotate_speed * dt ;
     
 }
+
+
+

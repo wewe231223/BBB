@@ -144,3 +144,107 @@ Mesh::Mesh(std::string path) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(UINT)* m_vertexIndices.size(), &(m_vertexIndices[0]), GL_STATIC_DRAW);
 
 }
+
+
+
+void RenderCube(UINT sid,float3 Left_Bottom, float3 Right_Top){
+
+	
+	UINT transformLocation = glGetUniformLocation(sid, "transform");
+
+	glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4{ 1.f }));
+
+
+
+	
+	UINT Vao{};
+	UINT Vbo{};
+	UINT Ebo{};
+
+
+	
+
+
+
+
+	vertex Verties[8]{};
+	UINT Indices[24]{
+	0,1,
+	1,2,
+	2,3,
+	3,0,
+	0,4,
+	1,5,
+	2,7,
+	3,6,
+	4,5,
+	5,7,
+	7,6,
+	6,4
+	};
+
+
+	Verties[0].position = Left_Bottom;
+	Verties[1].position = float3{ Right_Top.x,		Left_Bottom.y,		Left_Bottom.z};
+	Verties[2].position = float3{ Right_Top.x,		Left_Bottom.y,		Right_Top.z };
+	Verties[3].position = float3{ Left_Bottom.x,	Left_Bottom.y,		Right_Top.z};
+	
+	Verties[4].position = float3{ Left_Bottom.x,	Right_Top.y,		Left_Bottom.z };
+	Verties[5].position = float3{ Right_Top.x,		Right_Top.y,		Left_Bottom.z };
+	Verties[6].position = float3{ Left_Bottom.x,	Right_Top.y,		Right_Top.z };
+	Verties[7].position = Right_Top;
+
+
+
+
+
+
+
+	for (auto i = 0; i < 8; ++i) {
+		// color 
+		Verties[i].color.x = 1.f;
+		Verties[i].color.y = 0.f;
+		Verties[i].color.z = 0.f;
+		
+	}
+
+	
+	glGenVertexArrays(1, &Vao);
+	glGenBuffers(1, &Vbo);
+
+	glBindVertexArray(Vao);
+	glBindBuffer(GL_ARRAY_BUFFER, Vbo);
+
+	glGenBuffers(1, &Ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Ebo);
+
+
+
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * 8, Verties,GL_STATIC_DRAW);
+	
+	
+	glBindBuffer(GL_ARRAY_BUFFER, Vbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, position));
+	glEnableVertexAttribArray(0);
+
+	
+
+	glBindBuffer(GL_ARRAY_BUFFER, Vbo);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, color));
+	glEnableVertexAttribArray(1);
+
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(UINT) * 24, Indices, GL_STATIC_DRAW);
+
+
+
+	glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
+
+
+	glDeleteBuffers(1, &Vbo);
+	glDeleteBuffers(1, &Ebo);
+	glDeleteVertexArrays(1, &Vao);
+
+
+}

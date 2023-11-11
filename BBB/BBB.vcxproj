@@ -137,7 +137,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collide_Functions.cpp" />
     <ClCompile Include="Coord.cpp" />
     <ClCompile Include="Engine.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -151,11 +153,15 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="Tank.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collide_Functions.h" />
     <ClInclude Include="Coord.h" />
     <ClInclude Include="Engine.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -168,7 +174,9 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="Tank.h" />
+    <ClInclude Include="Tank.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>

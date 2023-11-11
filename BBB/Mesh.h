@@ -17,9 +17,13 @@ private:
 	unsigned int m_ebo{};
 	unsigned int m_vbo{};
 
+
+
+
 public:
 	const UINT  GetMesh() { return m_vao; }
 	const size_t  GetVertexCount(){ return m_vertexCount; }
-
 };
 
+
+void RenderCube(UINT sid,float3 Left_Bottom, float3 Right_Top);

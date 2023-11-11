@@ -60,6 +60,12 @@
     <ClCompile Include="Robot.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="Collide_Functions.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -99,6 +105,12 @@
       <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="Robot.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Collide_Functions.h">
       <Filter>Header File</Filter>
     </ClInclude>
   </ItemGroup>
