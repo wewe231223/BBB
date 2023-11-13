@@ -26,6 +26,8 @@ private:
 public:
 	Box(UINT sid, std::shared_ptr<Mesh> mesh);
 
+	void Scale(glm::vec3 Scale);
+
 	virtual void Render(UINT sid) { m_body->Render(sid); RenderCube(sid, m_bounding_Box_Left_Bottom, m_bounding_Box_Right_Top); };
 	virtual void Update(float dt) {};
 	std::tuple<float3, float3> Get_Bounding_Box() { return std::make_tuple(m_bounding_Box_Left_Bottom, m_bounding_Box_Right_Top); };

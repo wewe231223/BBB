@@ -11,13 +11,13 @@ constexpr bool Idle = false;
 constexpr bool Walk = true;
 
 
-class Robot final: public MonoObject{
+class Robot final : public MonoObject {
 
 public:
 	Robot(UINT sid, std::shared_ptr<Mesh> mesh);
 
 private:
-	std::shared_ptr<Model> m_body{nullptr};
+	std::shared_ptr<Model> m_body{ nullptr };
 
 
 
@@ -37,7 +37,6 @@ private:
 	bool m_status = Idle;
 
 
-	glm::vec3 m_position{ 0.f,10.f,0.f };
 
 
 	float3 m_bounding_Box_Left_Bottom{};
@@ -45,18 +44,39 @@ private:
 
 
 
-	
-	
+
+
 	float m_swingSpeed = 100.f;
 	float m_movingSpeed = 2.f;
 
 	float m_gravity = 9.8f;
 	float m_Y_Force{};
-	float m_jumpDeltaTime{};
+	glm::vec3 m_moveForce{ };
+
+
+
+
+
+	//void Jump() { m_moveForce.y = jumpPower; }
+	//void Gravity(float deltaTime) { m_moveForce.y -= m_gravity * deltaTime; }
+	//void Move(float deltaTime) { m_position += m_moveForce * deltaTime; }
+
+
+
+	bool m_jumpFlag = false;
+
+
+
 
 private:
 
-	void HandleInput(glm::vec3& Movement,float dt);
+	void Handle_Input(glm::vec3& Movement,float dt);
+	void Handle_Gravity(glm::vec3& Movement, float dt);
+
+
+
+	void Add_Force(float Force);
+
 
 
 public:

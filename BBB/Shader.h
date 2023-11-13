@@ -1,9 +1,16 @@
 #pragma once
+
+
+
+
+
 class Shader{
 
 private:
 
 	unsigned int m_shaderID{};
+
+	
 
 	
 public:
@@ -13,4 +20,7 @@ public:
 	unsigned int GetShaderID() { return m_shaderID; };
 
 };
+
+
+
 

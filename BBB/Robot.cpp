@@ -103,7 +103,7 @@ Robot::Robot(UINT sid,std::shared_ptr<Mesh> mesh){
 	
 }
 
-void Robot::HandleInput(glm::vec3& Movement,float dt)
+void Robot::Handle_Input(glm::vec3& Movement,float dt)
 {
 
 	KEY_STATE Up = Input::GetInstance()->GetKey(GLFW_KEY_UP);
@@ -212,12 +212,16 @@ void Robot::HandleInput(glm::vec3& Movement,float dt)
 		m_movingSpeed -= 0.5f;
 	}
 
+
 	m_swingSpeed = std::clamp(m_swingSpeed, 0.f, 1000.f);
 	m_movingSpeed = std::clamp(m_movingSpeed, 0.f, 1000.f);
 
 
-	if (Input::GetInstance()->GetKey(GLFW_KEY_EQUAL) == KEY_STATE::DOWN) {
+	if (Input::GetInstance()->GetKey(GLFW_KEY_SPACE) == KEY_STATE::PRESS) {
+		m_Y_Force = 15.f;
+		m_jumpFlag = true;
 	}
+
 
 
 	if (m_status == Walk) {
@@ -240,113 +244,56 @@ void Robot::HandleInput(glm::vec3& Movement,float dt)
 
 }
 
+void Robot::Handle_Gravity(glm::vec3& Movement, float dt){
+
+	
+	m_Y_Force -= m_gravity * dt;
+	
+	Movement.y += m_Y_Force * dt;
+	Movement.y -= m_gravity * dt;
+
+
+}
+
+void Robot::Add_Force(float Force){
+	m_Y_Force += Force;
+}
+
 void Robot::Update(float dt){
 
 
-	if (Input::GetInstance()->GetKey(GLFW_KEY_SPACE) == KEY_STATE::DOWN) {
-		m_Y_Force += 1.f;
-
-	}
-
 	glm::vec3 Movement{};
 
+	Handle_Input(Movement, dt);
+	Handle_Gravity(Movement, dt);
 
-	HandleInput(Movement, dt);
-
-
-	if (Input::GetInstance()->GetKey(GLFW_KEY_EQUAL) == KEY_STATE::DOWN) {
-		m_swingSpeed += 20.f;
-		m_movingSpeed += 0.5f;
-	}
-
-
-	if (Input::GetInstance()->GetKey(GLFW_KEY_MINUS) == KEY_STATE::DOWN) {
-		m_swingSpeed -= 20.f;
-		m_movingSpeed -= 0.5f;
-	}
-
-	m_swingSpeed = std::clamp(m_swingSpeed, 0.f, 1000.f );
-	m_movingSpeed = std::clamp(m_movingSpeed, 0.f, 1000.f);
-
-
-	if (Input::GetInstance()->GetKey(GLFW_KEY_EQUAL) == KEY_STATE::DOWN) {
-	}
-
-
-	if (m_status == Walk) {
-		m_rightHand->Rotate(glm::vec3(0.f, 0.f, m_swingSpeed));
-		m_leftHand->Rotate(glm::vec3(0.f, 0.f, m_swingSpeed));
-
-		m_rightLeg->Rotate(glm::vec3(0.f, 0.f, m_swingSpeed));
-		m_leftLeg->Rotate(glm::vec3(0.f, 0.f, m_swingSpeed));
-
-	}
-	else {
-
-		m_rightHand->DelRotate();
-		m_leftHand->DelRotate();
-
-		m_rightLeg->DelRotate();
-		m_leftLeg->DelRotate();
-
-	}
-
-	Movement.y += m_Y_Force;
-	m_Y_Force -= 0.098f;
-	Movement.y -= m_gravity * dt;
-	m_Y_Force = std::clamp(m_Y_Force, 0.f, FLT_MAX);
-	m_position.y = std::clamp(m_position.y, 0.8f, FLT_MAX);
-
+	
 	m_position += Movement;
 
-	m_body->Set(m_position, Qualifier::POSITION);
 
 	m_bounding_Box_Left_Bottom = float3{ m_position.x - 0.4f,m_position.y - 0.8f,m_position.z - 0.2f };
 	m_bounding_Box_Right_Top = float3{ m_position.x + 0.4f,m_position.y + 0.6f,m_position.z + 0.2f };
 
 
-	bool CollideFlag = false;
+	bool bb_Modified = false;
+	for (auto& i : m_Collides) {
+		std::tuple<float3, float3> o_bb = i->Get_Bounding_Box();
+		float3 o_bb_Left_Bottom = std::get<0>(o_bb);
+		float3 o_bb_Right_Top = std::get<1>(o_bb);
 
 
-	for (auto& o : m_Collides) {
-
-		std::tuple<float3, float3> o_bb{ o->Get_Bounding_Box() };
-
-		float3 o_bb_Left_bottom{ std::get<0>(o_bb) };
-		float3 o_bb_Right_Top{ std::get<1>(o_bb) };
-
-		if (AABB(m_bounding_Box_Left_Bottom, m_bounding_Box_Right_Top, o_bb_Left_bottom, o_bb_Right_Top)) {
-			CollideFlag = true;
-		}
-
-
-		if (m_bounding_Box_Left_Bottom.y + 0.01f > o_bb_Right_Top.y and CollideFlag) {
-			
-			Movement.y = 0.f;
-			m_gravity = 0.f;
-			CollideFlag = false;
-
-		}
-		else {
-			m_gravity = 9.8f;
-		}
+		bb_Modified = AABB(m_position, m_bounding_Box_Left_Bottom, m_bounding_Box_Right_Top, o_bb_Left_Bottom, o_bb_Right_Top);
 
 	}
-	
-	std::cout << CollideFlag << std::endl;
 
-	if (CollideFlag) {
-		m_position -= Movement;
-		m_body->Set(m_position, Qualifier::POSITION);
+	if (bb_Modified) {
 		m_bounding_Box_Left_Bottom = float3{ m_position.x - 0.4f,m_position.y - 0.8f,m_position.z - 0.2f };
 		m_bounding_Box_Right_Top = float3{ m_position.x + 0.4f,m_position.y + 0.6f,m_position.z + 0.2f };
+
 	}
 
 
-
-
-	
-
+	m_body->Set(m_position, Qualifier::POSITION);
 
 	m_body->Update(dt);
 
@@ -366,7 +313,7 @@ void Robot::Render(UINT sid)
 	
 
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	m_body->Render(sid);
 	m_head->Render(sid);

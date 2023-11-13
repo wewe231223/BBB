@@ -77,9 +77,15 @@ void Renderer::Load(std::string path){
 
 		if (head._Equal("Object")) {
 
-			std::string objectName, meshName{};
+			std::string objectName, meshName, ObjectTag{};
 
-			file >> objectName >> meshName;
+
+
+			file >> objectName >> meshName >> ObjectTag;
+
+			
+
+
 
 			auto iter = m_meshDict.find(meshName);
 			assert(!(iter == m_meshDict.end()), __FILE__, __LINE__);
@@ -90,32 +96,53 @@ void Renderer::Load(std::string path){
 				//m_objectList.push_back(std::make_shared<Tank>(m_shader->GetShaderID(), iter->second));
 			}
 			else if (objectName._Equal("Robot")) {
-
+				std::shared_ptr<Robot> newRobot = std::make_shared<Robot>(m_shader->GetShaderID(), iter->second);
 				m_objectList.push_back(std::make_shared<Robot>(m_shader->GetShaderID(), iter->second));
+				m_objectDict.insert(std::make_pair(ObjectTag, newRobot));
+			}
+			else if (objectName._Equal("Box")) {
+				std::shared_ptr<Box> newBox = std::make_shared<Box>(m_shader->GetShaderID(), iter->second);
+				m_objectList.push_back(std::make_shared<Box>(m_shader->GetShaderID(), iter->second));
+				m_objectDict.insert(std::make_pair(ObjectTag, newBox));
 			}
 			else {
 				std::cerr << objectName << " : Not Found" << std::endl;
 			}
 
+		}
+
+
+
+
+		if (head._Equal("<Collide>")) {
+			std::string targetName, SourceName{};
+
+			file >> targetName >> SourceName;
+
+
+			auto target = m_objectDict.find(targetName);
+			auto source = m_objectDict.find(SourceName);
+
+
+			assert(target != m_objectDict.end());
+			assert(source != m_objectDict.end());
+
+			std::cout << targetName << " " << SourceName << std::endl;
+
+			target->second->Add_Collide(source->second);
+
+
+
+
+
+
+
+
 
 		}
-		
-		if (head._Equal("Collide")) {
-			std::string objectName, meshName{};
-
-			file >> objectName >> meshName;
-
-			auto iter = m_meshDict.find(meshName);
-			assert(!(iter == m_meshDict.end()), __FILE__, __LINE__);
-
-			if (objectName._Equal("Box")) {
-				m_objectList.push_back(std::make_shared<Box>(m_shader->GetShaderID(), iter->second));
-				(*(m_objectList.end() - 2))->Add_Collide(m_objectList.back());
-			}
-			
 
 
-		}
+
 
 		if (head._Equal("->Position")) {
 
@@ -186,14 +213,10 @@ void Renderer::Render(){
 
 	m_camera->Render(m_shader->GetShaderID());
 	m_coord->Render(m_shader->GetShaderID());
-	for (auto& i : m_modelList) {
-		i->Render(m_shader->GetShaderID());
+	
+	for (const auto& [key,value] : m_objectDict) {
+		value->Render(m_shader->GetShaderID());
 	}
-
-	for (auto& i : m_objectList) {
-		i->Render(m_shader->GetShaderID());
-	}
-
 
 //	RenderCube(m_shader->GetShaderID(), float3{ 50.f,50.f,50.f }, float3{ 100.f,100.f,100.f });
 
@@ -204,12 +227,10 @@ void Renderer::Update(float dt){
 
 	m_camera->Update(dt);
 	
-	for (auto& i : m_modelList) {
-		i->Update(dt);
-	}
 
-	for (auto& i : m_objectList) {
-		i->Update(dt);
+
+	for (const auto& [key, value] : m_objectDict) {
+		value->Update(dt);
 	}
 
 

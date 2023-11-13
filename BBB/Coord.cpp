@@ -108,8 +108,8 @@ void Coord::Render(UINT sid){
 
 
 
-	glBindVertexArray(m_vaoXZ);
-	glDrawArrays(GL_TRIANGLES, 0, 18);
+	//glBindVertexArray(m_vaoXZ);
+	//glDrawArrays(GL_TRIANGLES, 0, 18);
 
 	glBindVertexArray(m_vaoLine);
 	glDrawArrays(GL_LINES, 0, 18);

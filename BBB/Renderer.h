@@ -22,13 +22,20 @@ private:
 	GLFWwindow* m_window{ nullptr };
 
 	std::map<std::string,std::shared_ptr<Mesh>> m_meshDict{};
+	
 	std::vector<std::shared_ptr<Model>> m_modelList{};
+
+
+
+	std::map<std::string, std::shared_ptr<MonoObject>> m_objectDict{};
 	std::vector<std::shared_ptr<MonoObject>> m_objectList{};
 	
 	
 	std::unique_ptr<Shader> m_shader{ nullptr };
 	std::unique_ptr<Camera> m_camera{ nullptr };
 	std::unique_ptr<Coord> m_coord{ nullptr };
+
+
 
 
 
