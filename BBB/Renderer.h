@@ -5,7 +5,7 @@
 #include "Model.h"
 #include "Camera.h"
 #include "Coord.h"
-
+#include "Rigidbody_.h"
 
 
 class Renderer{
@@ -27,7 +27,7 @@ private:
 
 
 
-	std::map<std::string, std::shared_ptr<MonoObject>> m_objectDict{};
+	std::map<std::string, std::shared_ptr<Rigidbody>> m_objectDict{};
 	std::vector<std::shared_ptr<MonoObject>> m_objectList{};
 	
 	

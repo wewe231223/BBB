@@ -2,9 +2,9 @@
 #include "Mesh.h"
 #include "Model.h"
 
+#include "Rigidbody_.h"
 
-
-class Box final : public MonoObject{
+class Box final : public Rigidbody{
 private:
 
 	

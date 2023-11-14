@@ -66,6 +66,9 @@
     <ClCompile Include="Collide_Functions.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
+    <ClCompile Include="Rigidbody_.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -111,6 +114,9 @@
       <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="Collide_Functions.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody_.h">
       <Filter>Header File</Filter>
     </ClInclude>
   </ItemGroup>

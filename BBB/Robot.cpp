@@ -23,7 +23,7 @@ Robot::Robot(UINT sid,std::shared_ptr<Mesh> mesh){
 
 	m_body = std::make_shared<Model>(sid, mesh->GetMesh(), mesh->GetVertexCount());
 
-	m_body->Set(glm::vec3{ 10.f,10.f,10.f }, Qualifier::POSITION);
+	m_body->Set(glm::vec3{ 10.f,0.f,10.f }, Qualifier::POSITION);
 	m_body->Set(glm::vec3{ 5.f,7.f,3.f }, Qualifier::SCALE);
 
 
@@ -97,7 +97,7 @@ Robot::Robot(UINT sid,std::shared_ptr<Mesh> mesh){
 
 
 	m_body->Shrink();
-
+	m_position = glm::vec3{ 10.f,0.f,10.f };
 
 
 	
@@ -110,6 +110,8 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 	KEY_STATE Down = Input::GetInstance()->GetKey(GLFW_KEY_DOWN);
 	KEY_STATE Right = Input::GetInstance()->GetKey(GLFW_KEY_RIGHT);
 	KEY_STATE Left = Input::GetInstance()->GetKey(GLFW_KEY_LEFT);
+
+
 
 
 
@@ -217,8 +219,9 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 	m_movingSpeed = std::clamp(m_movingSpeed, 0.f, 1000.f);
 
 
-	if (Input::GetInstance()->GetKey(GLFW_KEY_SPACE) == KEY_STATE::PRESS) {
-		m_Y_Force = 15.f;
+	if (Input::GetInstance()->GetKey(GLFW_KEY_SPACE) == KEY_STATE::DOWN) {
+		m_Y_Force = 1300.f;
+		m_jumpdt = 0.f;
 		m_jumpFlag = true;
 	}
 
@@ -246,11 +249,6 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 
 void Robot::Handle_Gravity(glm::vec3& Movement, float dt){
 
-	
-	m_Y_Force -= m_gravity * dt;
-	
-	Movement.y += m_Y_Force * dt;
-	Movement.y -= m_gravity * dt;
 
 
 }
@@ -262,36 +260,14 @@ void Robot::Add_Force(float Force){
 void Robot::Update(float dt){
 
 
-	glm::vec3 Movement{};
+	temp += 0.001f;
 
-	Handle_Input(Movement, dt);
-	Handle_Gravity(Movement, dt);
+	m_body->Set(glm::vec3{ temp,temp,temp }, Qualifier::SCALE);
 
-	
-	m_position += Movement;
+//	Rigidbody::Update(dt);
 
-
-	m_bounding_Box_Left_Bottom = float3{ m_position.x - 0.4f,m_position.y - 0.8f,m_position.z - 0.2f };
-	m_bounding_Box_Right_Top = float3{ m_position.x + 0.4f,m_position.y + 0.6f,m_position.z + 0.2f };
-
-
-	bool bb_Modified = false;
-	for (auto& i : m_Collides) {
-		std::tuple<float3, float3> o_bb = i->Get_Bounding_Box();
-		float3 o_bb_Left_Bottom = std::get<0>(o_bb);
-		float3 o_bb_Right_Top = std::get<1>(o_bb);
-
-
-		bb_Modified = AABB(m_position, m_bounding_Box_Left_Bottom, m_bounding_Box_Right_Top, o_bb_Left_Bottom, o_bb_Right_Top);
-
-	}
-
-	if (bb_Modified) {
-		m_bounding_Box_Left_Bottom = float3{ m_position.x - 0.4f,m_position.y - 0.8f,m_position.z - 0.2f };
-		m_bounding_Box_Right_Top = float3{ m_position.x + 0.4f,m_position.y + 0.6f,m_position.z + 0.2f };
-
-	}
-
+	glm::vec3 M{};
+	Handle_Input(M,dt);
 
 	m_body->Set(m_position, Qualifier::POSITION);
 
@@ -326,5 +302,6 @@ void Robot::Render(UINT sid)
 
 	RenderCube(sid, m_bounding_Box_Left_Bottom, m_bounding_Box_Right_Top);
 
-
+	RenderVector(sid, m_position, glm::vec3{ 10.f,10.f,10.f });
 }
+

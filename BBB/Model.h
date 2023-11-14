@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 enum class Qualifier {
 	POSITION,
 	PIVOT,
@@ -23,12 +25,14 @@ constexpr auto Negative = -1.f;
 
 
 
+
+
 class MonoObject abstract {
 protected:
 	std::vector<std::shared_ptr<MonoObject>> m_Collides{};
 
 
-	glm::vec3 m_position{ 0.f,10.f,0.f };
+	glm::vec3 m_position{ 0.f,0.f,0.f };
 	glm::vec3 m_scale{ 1.f,1.f,1.f };
 
 
@@ -39,7 +43,7 @@ public:
 	virtual void Update(float dt) = 0;
 
 	virtual std::tuple<float3, float3> Get_Bounding_Box() = 0;
-	virtual void Add_Collide(std::shared_ptr<MonoObject> otherObject) { m_Collides.push_back(otherObject); }
+	void Add_Collide(std::shared_ptr<MonoObject> otherObject) { m_Collides.push_back(otherObject); }
 
 };
 

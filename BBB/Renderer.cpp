@@ -97,12 +97,10 @@ void Renderer::Load(std::string path){
 			}
 			else if (objectName._Equal("Robot")) {
 				std::shared_ptr<Robot> newRobot = std::make_shared<Robot>(m_shader->GetShaderID(), iter->second);
-				m_objectList.push_back(std::make_shared<Robot>(m_shader->GetShaderID(), iter->second));
 				m_objectDict.insert(std::make_pair(ObjectTag, newRobot));
 			}
 			else if (objectName._Equal("Box")) {
 				std::shared_ptr<Box> newBox = std::make_shared<Box>(m_shader->GetShaderID(), iter->second);
-				m_objectList.push_back(std::make_shared<Box>(m_shader->GetShaderID(), iter->second));
 				m_objectDict.insert(std::make_pair(ObjectTag, newBox));
 			}
 			else {
@@ -129,7 +127,7 @@ void Renderer::Load(std::string path){
 
 			std::cout << targetName << " " << SourceName << std::endl;
 
-			target->second->Add_Collide(source->second);
+			target->second->AddCollide(source->second);
 
 
 

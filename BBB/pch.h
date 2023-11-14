@@ -30,6 +30,8 @@
 #include <unordered_map>
 #include <list>
 
+
+
 using int32 = __int32;
 using int64 = __int64;
 
@@ -46,6 +48,10 @@ struct _TAG_WINDOWINFO {
 	int32		width{ };
 	int32		height{ };
 	std::string windowTitle{ };
+
+
+
+
 };
 
 struct _TAG_FLOAT2 {
@@ -76,6 +82,12 @@ struct _TAG_VERTEX {
 	_TAG_FLOAT4 color{ };
 	_TAG_FLOAT2 texture{ };
 	glm::vec3	normal{ };
+
+	_TAG_VERTEX() = default;
+	_TAG_VERTEX(const glm::vec3& other) {
+		position = _TAG_FLOAT3{other.x, other.y, other.z};
+		color = _TAG_FLOAT4{1.f,0.f,0.f,1.f};
+	}
 };
 
 using float2 = _TAG_FLOAT2;

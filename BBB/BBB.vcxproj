@@ -151,6 +151,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Rigidbody_.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Tank.cpp">
@@ -172,6 +173,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Rigidbody_.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Tank.h">
