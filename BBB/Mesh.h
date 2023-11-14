@@ -28,4 +28,5 @@ public:
 
 void RenderCube(UINT sid,float3 Left_Bottom, float3 Right_Top);
 void RenderCube(UINT sid, glm::vec3 Left_Bottom, glm::vec3 Right_Top);
+void RenderVector(UINT sid, glm::vec3 Startpoint, glm::vec3 Vector, float3 color);
 void RenderVector(UINT sid, glm::vec3 Startpoint, glm::vec3 Vector);

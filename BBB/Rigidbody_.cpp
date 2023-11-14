@@ -27,21 +27,30 @@ void Rigidbody::Movement(glm::vec3 movement) {
 
 
 void Rigidbody::Update(float dt) {
+    
 
-    m_velocity += m_force;
-    m_position += m_velocity * dt;
-    m_force.y -= GRAVITY_SCALE;
+    glm::vec3 RotateFactor = glm::radians(m_rotate);
 
-
-    for (auto other : m_collides) {
-
-
+    m_axisX = glm::yawPitchRoll(RotateFactor.y, RotateFactor.z, RotateFactor.x) * glm::vec4{m_axisX,1.f};
+    m_axisY = glm::yawPitchRoll(RotateFactor.y, RotateFactor.z, RotateFactor.x) * glm::vec4{ m_axisY,1.f };
+    m_axisZ = glm::yawPitchRoll(RotateFactor.y, RotateFactor.z, RotateFactor.x) * glm::vec4{ m_axisZ,1.f };
 
 
-       
+    m_axisX = glm::normalize(m_axisX);
+    m_axisY = glm::normalize(m_axisY);
+    m_axisZ = glm::normalize(m_axisZ);
+
+
+
+    for (auto& other : m_collides) {
+
+        if (OBB(m_position,other->GetPosition(),MakeOBBParameter(),other->MakeOBBParameter())) {
+
+            m_position -= m_deltaPosition * 1.001f;
+            
+        }
+
     }
-
-
 
 
 
@@ -54,8 +63,9 @@ void Rigidbody::Update(float dt) {
 
 bool SeparatePlaneExistance(glm::vec3 Posvec, glm::vec3 Plane, std::tuple<glm::vec3, glm::vec3, glm::vec3, float, float, float> Box1, std::tuple<glm::vec3, glm::vec3, glm::vec3, float, float, float> Box2)
 {
-    return
 
+    
+    return
         (std::fabs(glm::dot(Posvec, Plane)) >
             std::fabs(glm::dot(std::get<0>(Box1) * std::get<3>(Box1), Plane)) +
             std::fabs(glm::dot(std::get<1>(Box1) * std::get<4>(Box1), Plane)) +
@@ -72,44 +82,44 @@ bool SeparatePlaneExistance(glm::vec3 Posvec, glm::vec3 Plane, std::tuple<glm::v
 
 
 
-bool OBB(std::shared_ptr<Rigidbody> rigid1, std::shared_ptr<Rigidbody> rigid2)
+bool OBB(glm::vec3 rigid1_Position,glm::vec3 rigid2_Position,OBB_PARAMETER rigid1,OBB_PARAMETER rigid2)
 {
 
+    glm::vec3 PosVector = rigid2_Position - rigid1_Position;
 
-    glm::vec3 PosVector = rigid2->GetPosition() - rigid1->GetPosition();
 
-    OBB_PARAMETER rigid1_Box = rigid1->MakeOBBParameter();
-    OBB_PARAMETER rigid2_Box = rigid2->MakeOBBParameter();
+    glm::vec3 rigid1_AxisX = std::get<0>(rigid1);
+    glm::vec3 rigid1_AxisY = std::get<1>(rigid1);
+    glm::vec3 rigid1_AxisZ = std::get<2>(rigid1);
 
-    if (SeparatePlaneExistance(PosVector, rigid1->m_axisX, rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, rigid1->m_axisY, rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, rigid1->m_axisZ, rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, rigid2->m_axisX, rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, rigid2->m_axisY, rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, rigid2->m_axisZ, rigid1_Box, rigid2_Box)) return false;
+
+    glm::vec3 rigid2_AxisX = std::get<0>(rigid2);
+    glm::vec3 rigid2_AxisY = std::get<1>(rigid2);
+    glm::vec3 rigid2_AxisZ = std::get<2>(rigid2);
+
+
+    if (SeparatePlaneExistance(PosVector, rigid1_AxisX, rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, rigid1_AxisY, rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, rigid1_AxisZ, rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, rigid2_AxisX, rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, rigid2_AxisY, rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, rigid2_AxisZ, rigid1, rigid2)) return false;
     
 
 
 
 
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisX, rigid2->m_axisX), rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisX, rigid2->m_axisY), rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisX, rigid2->m_axisZ), rigid1_Box, rigid2_Box)) return false;
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisX, rigid2_AxisX), rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisX, rigid2_AxisY), rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisX, rigid2_AxisZ), rigid1, rigid2)) return false;
     
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisY, rigid2_AxisX), rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisY, rigid2_AxisY), rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisY, rigid2_AxisZ), rigid1, rigid2)) return false;
 
-
-
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisY, rigid2->m_axisX), rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisY, rigid2->m_axisY), rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisY, rigid2->m_axisZ), rigid1_Box, rigid2_Box)) return false;
-    
-
-
-
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisZ, rigid2->m_axisX), rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisZ, rigid2->m_axisY), rigid1_Box, rigid2_Box)) return false;
-    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1->m_axisZ, rigid2->m_axisZ), rigid1_Box, rigid2_Box)) return false;
-    
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisZ, rigid2_AxisX), rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisZ, rigid2_AxisY), rigid1, rigid2)) return false;
+    if (SeparatePlaneExistance(PosVector, glm::cross(rigid1_AxisZ, rigid2_AxisZ), rigid1, rigid2)) return false;
 
 
     return true;

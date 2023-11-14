@@ -21,6 +21,9 @@ Robot::Robot(UINT sid,std::shared_ptr<Mesh> mesh){
 // 	m_mainBody = std::make_shared<Model>(sid, mesh->GetMesh(),mesh->GetVertexCount());
 
 
+
+
+
 	m_body = std::make_shared<Model>(sid, mesh->GetMesh(), mesh->GetVertexCount());
 
 	m_body->Set(glm::vec3{ 10.f,0.f,10.f }, Qualifier::POSITION);
@@ -96,9 +99,16 @@ Robot::Robot(UINT sid,std::shared_ptr<Mesh> mesh){
 
 
 
-	m_body->Shrink();
-	m_position = glm::vec3{ 10.f,0.f,10.f };
+	
+	m_position = glm::vec3{ 0.f,0.f,1.f };
+	
+	m_body->Shrink(0.1f);
 
+	m_volumeX = 0.4f;
+	m_volumeY = 0.8f;
+	m_volumeZ = 0.2f;
+
+	
 
 	
 }
@@ -122,7 +132,7 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 		Movement.z -= m_movingSpeed * dt;
 
 		m_body->RotateScalar(glm::vec3{ 0.f,0.f,0.f });
-
+		m_rotate = glm::vec3{ 0.f,0.f,0.f };
 
 
 	}
@@ -137,7 +147,8 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 		// 180
 		Movement.z += m_movingSpeed * dt;
 		m_body->RotateScalar(glm::vec3{ 0.f,180.f,0.f });
-
+		m_rotate = glm::vec3{ 0.f,180.f,0.f };
+		
 
 	}
 	else if (Down == KEY_STATE::RELEASE) {
@@ -160,12 +171,18 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 
 		if (Up == KEY_STATE::PRESS) {
 			m_body->RotateScalar(glm::vec3{ 0.f,-45.f,0.f });
+			m_rotate = glm::vec3{ 0.f,-45.f,0.f };
+			
 		}
 		else if (Down == KEY_STATE::PRESS) {
 			m_body->RotateScalar(glm::vec3{ 0.f,-135.f,0.f });
+			m_rotate = glm::vec3{ 0.f,-135.f,0.f };
+			
 		}
 		else {
 			m_body->RotateScalar(glm::vec3{ 0.f,-90.f,0.f });
+			m_rotate = glm::vec3{ 0.f,-90.f,0.f };
+			
 		}
 
 
@@ -186,13 +203,18 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 
 		if (Up == KEY_STATE::PRESS) {
 			m_body->RotateScalar(glm::vec3{ 0.f,45.f,0.f });
+			m_rotate = glm::vec3{ 0.f,45.f,0.f };
+			
 
 		}
 		else if (Down == KEY_STATE::PRESS) {
 			m_body->RotateScalar(glm::vec3{ 0.f,135.f,0.f });
+			m_rotate = glm::vec3{ 0.f,135.f,0.f };
+			
 		}
 		else {
 			m_body->RotateScalar(glm::vec3{ 0.f,90.f,0.f });
+			m_rotate = glm::vec3{ 0.f,90.f,0.f };
 		}
 
 	}
@@ -209,6 +231,7 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 	}
 
 
+
 	if (Input::GetInstance()->GetKey(GLFW_KEY_MINUS) == KEY_STATE::DOWN) {
 		m_swingSpeed -= 20.f;
 		m_movingSpeed -= 0.5f;
@@ -220,9 +243,7 @@ void Robot::Handle_Input(glm::vec3& Movement,float dt)
 
 
 	if (Input::GetInstance()->GetKey(GLFW_KEY_SPACE) == KEY_STATE::DOWN) {
-		m_Y_Force = 1300.f;
-		m_jumpdt = 0.f;
-		m_jumpFlag = true;
+	
 	}
 
 
@@ -253,21 +274,23 @@ void Robot::Handle_Gravity(glm::vec3& Movement, float dt){
 
 }
 
-void Robot::Add_Force(float Force){
-	m_Y_Force += Force;
-}
+
 
 void Robot::Update(float dt){
 
 
-	temp += 0.001f;
 
-	m_body->Set(glm::vec3{ temp,temp,temp }, Qualifier::SCALE);
-
-//	Rigidbody::Update(dt);
 
 	glm::vec3 M{};
 	Handle_Input(M,dt);
+
+	m_position += M;
+	m_deltaPosition = M;
+
+	std::cout << " Robot " << std::endl;
+	Rigidbody::Update(dt);
+	std::cout << " ======= " << std::endl;
+
 
 	m_body->Set(m_position, Qualifier::POSITION);
 
@@ -289,7 +312,9 @@ void Robot::Render(UINT sid)
 	
 
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
 
 	m_body->Render(sid);
 	m_head->Render(sid);
@@ -300,8 +325,20 @@ void Robot::Render(UINT sid)
 	m_rightLeg->Render(sid);
 	m_leftLeg->Render(sid);
 
-	RenderCube(sid, m_bounding_Box_Left_Bottom, m_bounding_Box_Right_Top);
 
-	RenderVector(sid, m_position, glm::vec3{ 10.f,10.f,10.f });
+
+	RenderVector(sid, m_position, m_axisX * m_volumeX,float3{1.f,0.f,0.f  });
+	RenderVector(sid, m_position, m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
+	RenderVector(sid, m_position, m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
+
+	RenderVector(sid, m_position, -m_axisX * m_volumeX, float3{ 1.f,0.f,0.f });
+	RenderVector(sid, m_position, -m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
+	RenderVector(sid, m_position, -m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
+
+
+	m_axisX = glm::vec3{ 1.f,0.f,0.f };
+	m_axisY = glm::vec3{ 0.f,1.f,0.f };
+	m_axisZ = glm::vec3{ 0.f,0.f,1.f };
+
 }
 

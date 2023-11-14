@@ -148,7 +148,7 @@ public:
 	void DelRotate() { m_rotate_speed = glm::vec3{ 0.f }; m_rotation = glm::vec3{ 0.f }; }
 
 
-	void Shrink() { m_scale *= 0.1f; }
+	void Shrink(float factor) { m_scale *= factor; }
 
 
 	void RotateScalar(glm::vec3 Rotate) { m_rotation = Rotate; }

@@ -250,6 +250,8 @@ void RenderCube(UINT sid,float3 Left_Bottom, float3 Right_Top){
 }
 
 
+
+
 void RenderCube(UINT sid, glm::vec3 Left_Bottom, glm::vec3 Right_Top) {
 
 
@@ -351,6 +353,55 @@ void RenderCube(UINT sid, glm::vec3 Left_Bottom, glm::vec3 Right_Top) {
 
 }
 
+void RenderVector(UINT sid, glm::vec3 Startpoint, glm::vec3 Vector, float3 color) {
+
+	UINT transformLocation = glGetUniformLocation(sid, "transform");
+	glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4{ 1.f }));
+
+
+	UINT Vao{};
+	UINT Vbo{};
+
+
+
+
+	vertex V[2]{ vertex{Startpoint},vertex{Startpoint + Vector} };
+
+	V[0].color = float4{ color.x,color.y,color.z,1.f };
+	V[1].color = float4{ color.x,color.y,color.z,1.f };
+
+
+
+	glGenVertexArrays(1, &Vao);
+	glGenBuffers(1, &Vbo);
+
+	glBindVertexArray(Vao);
+	glBindBuffer(GL_ARRAY_BUFFER, Vbo);
+
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * 2, V, GL_STATIC_DRAW);
+
+
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, position));
+	glEnableVertexAttribArray(0);
+
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, color));
+	glEnableVertexAttribArray(1);
+
+
+
+	glDrawArrays(GL_LINES, 0, 2);
+
+
+	glDeleteBuffers(1, &Vbo);
+	glDeleteVertexArrays(1, &Vao);
+
+}
+
+
+
 void RenderVector(UINT sid,glm::vec3 Startpoint, glm::vec3 Vector) {
 
 
@@ -394,3 +445,4 @@ void RenderVector(UINT sid,glm::vec3 Startpoint, glm::vec3 Vector) {
 	glDeleteVertexArrays(1, &Vao);
 
 }
+
