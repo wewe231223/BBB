@@ -287,9 +287,7 @@ void Robot::Update(float dt){
 	m_position += M;
 	m_deltaPosition = M;
 
-	std::cout << " Robot " << std::endl;
 	Rigidbody::Update(dt);
-	std::cout << " ======= " << std::endl;
 
 
 	m_body->Set(m_position, Qualifier::POSITION);
@@ -331,9 +329,9 @@ void Robot::Render(UINT sid)
 	RenderVector(sid, m_position, m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
 	RenderVector(sid, m_position, m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
 
-	RenderVector(sid, m_position, -m_axisX * m_volumeX, float3{ 1.f,0.f,0.f });
-	RenderVector(sid, m_position, -m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
-	RenderVector(sid, m_position, -m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
+	//RenderVector(sid, m_position, -m_axisX * m_volumeX, float3{ 1.f,0.f,0.f });
+	//RenderVector(sid, m_position, -m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
+	//RenderVector(sid, m_position, -m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
 
 
 	m_axisX = glm::vec3{ 1.f,0.f,0.f };

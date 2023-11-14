@@ -21,8 +21,23 @@ void Rigidbody::Movement(glm::vec3 movement) {
 }
 
 
+float fmax3(float f1, float f2, float f3) {
 
+    float max{};
+    if (f1 > f2) {
+        max = f1;
+    }
+    else {
+        max = f2;
+    }
 
+    if (f3 > max) {
+        max = f3;
+    }
+
+    return max;
+
+}
 
 
 
@@ -46,8 +61,47 @@ void Rigidbody::Update(float dt) {
 
         if (OBB(m_position,other->GetPosition(),MakeOBBParameter(),other->MakeOBBParameter())) {
 
-            m_position -= m_deltaPosition * 1.001f;
-            
+
+            glm::vec3 DirectionVector = other->m_position - m_position;
+
+
+
+            float dotx = std::fabs(glm::dot(DirectionVector, m_axisX));
+            float doty = std::fabs(glm::dot(DirectionVector, m_axisY));
+            float dotz = std::fabs(glm::dot(DirectionVector, m_axisZ));
+
+
+            float max = fmax3(dotx, doty, dotz);
+
+            if (max == dotx) {
+                
+                std::cout << "x" << std::endl;
+
+            }
+            else if (max == doty) {
+                std::cout << "y" << std::endl;
+
+            }
+            else if (max == dotz) {
+                std::cout << "z" << std::endl;
+            }
+
+
+
+
+
+          
+          /*  if (glm::distance(glm::vec3{ m_position.x,0.f,m_position.z }, glm::vec3{ other->m_position.x,0.f,other->m_position.z })
+                
+                < glm::
+                
+                ) {
+
+            }*/
+
+
+
+
         }
 
     }
@@ -61,7 +115,7 @@ void Rigidbody::Update(float dt) {
 
 
 
-bool SeparatePlaneExistance(glm::vec3 Posvec, glm::vec3 Plane, std::tuple<glm::vec3, glm::vec3, glm::vec3, float, float, float> Box1, std::tuple<glm::vec3, glm::vec3, glm::vec3, float, float, float> Box2)
+bool SeparatePlaneExistance(glm::vec3 Posvec, glm::vec3 Plane, OBB_PARAMETER Box1, OBB_PARAMETER Box2)
 {
 
     
