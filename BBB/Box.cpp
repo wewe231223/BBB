@@ -12,18 +12,25 @@ Box::Box(UINT sid, std::shared_ptr<Mesh> mesh){
 	
 
 	m_volumeX = 0.5f;
-	m_volumeY= 0.5f;
+	m_volumeY = 0.5f;
 	m_volumeZ = 0.5f;
 
 
 }
+
+
+
+
+
 
 void Box::Scale(glm::vec3 Scale)
 {
 	m_body->Set(Scale, Qualifier::SCALE);
 
 
-
+	m_volumeX *= Scale.x;
+	m_volumeY *= Scale.y;
+	m_volumeZ *= Scale.z;
 
 
 }
@@ -39,10 +46,6 @@ void Box::Render(UINT sid)
 	RenderVector(sid, m_position, m_axisX * m_volumeX, float3{ 1.f,0.f,0.f });
 	RenderVector(sid, m_position, m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
 	RenderVector(sid, m_position, m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
-
-	RenderVector(sid, m_position, -m_axisX * m_volumeX, float3{ 1.f,0.f,0.f });
-	RenderVector(sid, m_position, -m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
-	RenderVector(sid, m_position, -m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
 
 
 

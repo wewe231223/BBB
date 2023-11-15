@@ -41,7 +41,12 @@ float fmax3(float f1, float f2, float f3) {
 
 
 
+
+
+
 void Rigidbody::Update(float dt) {
+    
+
     
 
     glm::vec3 RotateFactor = glm::radians(m_rotate);
@@ -56,50 +61,18 @@ void Rigidbody::Update(float dt) {
     m_axisZ = glm::normalize(m_axisZ);
 
 
+    
+
 
     for (auto& other : m_collides) {
 
         if (OBB(m_position,other->GetPosition(),MakeOBBParameter(),other->MakeOBBParameter())) {
 
+            system("cls");
 
-            glm::vec3 DirectionVector = other->m_position - m_position;
-
-
-
-            float dotx = std::fabs(glm::dot(DirectionVector, m_axisX));
-            float doty = std::fabs(glm::dot(DirectionVector, m_axisY));
-            float dotz = std::fabs(glm::dot(DirectionVector, m_axisZ));
-
-
-            float max = fmax3(dotx, doty, dotz);
-
-            if (max == dotx) {
-                
-                std::cout << "x" << std::endl;
-
-            }
-            else if (max == doty) {
-                std::cout << "y" << std::endl;
-
-            }
-            else if (max == dotz) {
-                std::cout << "z" << std::endl;
-            }
-
-
-
-
-
-          
-          /*  if (glm::distance(glm::vec3{ m_position.x,0.f,m_position.z }, glm::vec3{ other->m_position.x,0.f,other->m_position.z })
-                
-                < glm::
-                
-                ) {
-
-            }*/
-
-
+            if (PlaneRayIntersection(other->GetPosition(), glm::normalize(other->m_axisX), m_position,glm::normalize( glm::vec3{m_position.x - m_volumeX,m_position.y,m_position.z}))) m_position.x -= m_deltaPosition.x;
+            if (PlaneRayIntersection(other->GetPosition(), glm::normalize(other->m_axisY), m_position, glm::normalize(glm::vec3{ m_position.x,m_position.y - m_volumeY,m_position.z }))) m_position.y -= m_deltaPosition.y;
+            if (PlaneRayIntersection(other->GetPosition(), glm::normalize(other->m_axisZ), m_position, glm::normalize(glm::vec3{ m_position.x,m_position.y,m_position.z - m_volumeZ }))) m_position.z -= m_deltaPosition.z;
 
 
         }
@@ -108,7 +81,7 @@ void Rigidbody::Update(float dt) {
 
 
 
-
+    
 }
 
 
@@ -183,3 +156,47 @@ bool OBB(glm::vec3 rigid1_Position,glm::vec3 rigid2_Position,OBB_PARAMETER rigid
 
 
 
+// p0 == plane's point, n == plane normal l0 = ray startpoint l = lay vector 
+bool PlaneRayIntersection(glm::vec3 p0, glm::vec3 n, glm::vec3 l0, glm::vec3 l) {
+
+
+    float denom = glm::dot(l, n);
+
+    float t{};
+
+    if (denom > FLT_EPSILON) {
+
+        glm::vec3 p0l0 = l0 - p0;
+        
+        t = glm::dot(p0l0, n) / denom;
+
+        return (t >= 0.f);
+
+
+    }
+
+    return false;
+
+}
+
+
+
+//
+// 
+// 
+// 
+//Ray Raycast() {
+//
+//
+//
+//    return 
+//
+//}
+//
+//
+//bool RaycastHit(Ray r) {
+//
+//
+//
+//
+//}

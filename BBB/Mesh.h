@@ -2,6 +2,8 @@
 class Mesh{
 public:
 	Mesh(std::string path);
+	Mesh(std::string path, float3 color);
+
 private:
 
 	std::vector<vertex> m_vertex{};

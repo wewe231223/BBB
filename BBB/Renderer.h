@@ -51,5 +51,12 @@ public:
 
 
 
+
+public:
+
+
+	void Solution24();
+
+
 };
 

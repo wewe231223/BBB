@@ -2,11 +2,15 @@
 
 
 typedef std::tuple<glm::vec3, glm::vec3, glm::vec3, float, float, float>  OBB_PARAMETER;
+
+typedef std::pair<glm::vec3, float> Ray;
+
 bool OBB(glm::vec3 rigid1_Position, glm::vec3 rigid2_Position, OBB_PARAMETER rigid1, OBB_PARAMETER rigid2);
 bool SeparatePlaneExistance(glm::vec3 Posvec, glm::vec3 Plane, std::tuple<glm::vec3, glm::vec3, glm::vec3, float, float, float > Box1,
 	std::tuple<glm::vec3, glm::vec3, glm::vec3, float, float, float> Box2);
 
-
+// p0 == plane's point, n == plane normal l0 = ray startpoint l = lay vector 
+bool PlaneRayIntersection(glm::vec3 p0, glm::vec3 n, glm::vec3 l0, glm::vec3 l);
 
 
 class Rigidbody{

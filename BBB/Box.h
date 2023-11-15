@@ -24,7 +24,7 @@ public:
 	void Scale(glm::vec3 Scale);
 
 	virtual void Render(UINT sid);
-	virtual void Update(float dt) {};
+	virtual void Update(float dt) { m_body->Set(m_position, Qualifier::POSITION); };
 
 };
 

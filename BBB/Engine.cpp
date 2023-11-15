@@ -76,7 +76,9 @@ void Engine::Init() {
 
 	//load scene 
 
-	m_renderer->Load("Scene2.properties");
+
+	m_renderer->Solution24();
+	//m_renderer->Load("Scene2.properties");
 }
 
 void Engine::Update() {

@@ -100,7 +100,7 @@ Robot::Robot(UINT sid,std::shared_ptr<Mesh> mesh){
 
 
 	
-	m_position = glm::vec3{ 0.f,0.f,1.f };
+	m_position = glm::vec3{ 2.f,2.f,1.f };
 	
 	m_body->Shrink(0.1f);
 
@@ -284,6 +284,8 @@ void Robot::Update(float dt){
 	glm::vec3 M{};
 	Handle_Input(M,dt);
 
+	M.y -= 9.8f * dt;
+
 	m_position += M;
 	m_deltaPosition = M;
 
@@ -310,7 +312,7 @@ void Robot::Render(UINT sid)
 	
 
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 
 

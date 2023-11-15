@@ -234,5 +234,69 @@ void Renderer::Update(float dt){
 
 }
 
+void Renderer::Solution24()
+{
+
+	std::shared_ptr<Mesh> CubeMesh = std::make_shared<Mesh>("cube.obj");
+
+	std::shared_ptr<Mesh> RedCube = std::make_shared<Mesh>("cube.obj", float3{ 1.f,0.f,0.f });
+	std::shared_ptr<Mesh> BlueCube = std::make_shared<Mesh>("cube.obj", float3{ 0.f,0.f,1.f });
+
+
+	std::shared_ptr<Robot> MainRobot = std::make_shared<Robot>(m_shader->GetShaderID(), CubeMesh);
+
+
+	m_objectDict.insert(std::make_pair(std::string("MainRobot"), MainRobot));
+
+
+	std::shared_ptr<Box> newBox{ nullptr };
+
+	for (auto i = 0; i < 10; ++i) {
+		for (auto j = 0; j < 10; ++j) {
+
+			if ((i + j) % 2 == 0) {
+				newBox = std::make_shared<Box>(m_shader->GetShaderID(), RedCube);
+			}
+			else {
+				newBox = std::make_shared<Box>(m_shader->GetShaderID(), BlueCube);
+			}
+
+			m_objectDict.insert(std::make_pair(std::to_string(i*10+j)  , newBox));
+			newBox->Movement(glm::vec3{ (float)j,0.f,(float)i });
+			MainRobot->AddCollide(newBox);
+
+
+
+
+		}
+	}
+
+
+
+
+
+
+	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
+	newBox->Movement(glm::vec3(1.5f, 1.f, 4.5f));
+	newBox->Scale(glm::vec3{ 1.f,1.f,1.f });
+	m_objectDict.insert(std::make_pair(std::string("wall1"), newBox));
+	MainRobot->AddCollide(newBox);
+
+
+
+
+	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
+	newBox->Movement(glm::vec3(1.5f,1.f, 4.5f));
+	newBox->Scale(glm::vec3{ 1.f,1.f,1.f });
+	m_objectDict.insert(std::make_pair(std::string("wall2"), newBox));
+	MainRobot->AddCollide(newBox);
+
+
+
+
+
+
+}
+
 
 
