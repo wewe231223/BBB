@@ -101,7 +101,6 @@ Coord::Coord(){
 void Coord::Render(UINT sid){
 
 	glDisable(GL_CULL_FACE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	GLuint TransitionLocation = glGetUniformLocation(sid, "transform");
 	glUniformMatrix4fv(TransitionLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));

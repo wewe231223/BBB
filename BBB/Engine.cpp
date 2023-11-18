@@ -77,6 +77,11 @@ void Engine::Init() {
 	//load scene 
 
 
+	glEnable(GL_DEPTH_TEST);
+
+
+
+
 	m_renderer->Solution24();
 	//m_renderer->Load("Scene2.properties");
 }
@@ -102,9 +107,8 @@ void Engine::Render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-
 	
-	// todo 
+
 	m_renderer->Render();
 
 	glfwSwapBuffers(m_windowInfo.window);

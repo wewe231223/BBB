@@ -11,7 +11,7 @@ Renderer::Renderer(GLFWwindow* Window){
 	m_window = Window;
 	m_shader = std::make_unique<Shader>();
 	m_coord = std::make_unique<Coord>();
-	m_camera = std::make_unique<Camera>(m_window, m_shader->GetShaderID(), glm::vec3(0.f, 0.f, 10.f), 0.1f, 1000.f);
+	m_camera = std::make_unique<Camera>(m_window, m_shader->GetShaderID(), glm::vec3(1.f, 1.f, 10.f), 0.1f, 1000.f);
 }
 
 void Renderer::Load(std::string path){
@@ -209,6 +209,9 @@ void Renderer::Load(std::string path){
 
 void Renderer::Render(){
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+
 	m_camera->Render(m_shader->GetShaderID());
 	m_coord->Render(m_shader->GetShaderID());
 	
@@ -225,11 +228,13 @@ void Renderer::Update(float dt){
 
 	m_camera->Update(dt);
 	
-
-
 	for (const auto& [key, value] : m_objectDict) {
 		value->Update(dt);
 	}
+
+
+	
+
 
 
 }
@@ -245,14 +250,16 @@ void Renderer::Solution24()
 
 	std::shared_ptr<Robot> MainRobot = std::make_shared<Robot>(m_shader->GetShaderID(), CubeMesh);
 
-
+	MainRobot->Movement(glm::vec3{ 10.f,6.f,10.f });
 	m_objectDict.insert(std::make_pair(std::string("MainRobot"), MainRobot));
 
 
+	
+
 	std::shared_ptr<Box> newBox{ nullptr };
 
-	for (auto i = 0; i < 10; ++i) {
-		for (auto j = 0; j < 10; ++j) {
+	for (auto i = 0; i < 32; ++i) {
+		for (auto j = 0; j < 32; ++j) {
 
 			if ((i + j) % 2 == 0) {
 				newBox = std::make_shared<Box>(m_shader->GetShaderID(), RedCube);
@@ -261,7 +268,7 @@ void Renderer::Solution24()
 				newBox = std::make_shared<Box>(m_shader->GetShaderID(), BlueCube);
 			}
 
-			m_objectDict.insert(std::make_pair(std::to_string(i*10+j)  , newBox));
+			m_objectDict.insert(std::make_pair(std::to_string(i*1000+j)  , newBox));
 			newBox->Movement(glm::vec3{ (float)j,0.f,(float)i });
 			MainRobot->AddCollide(newBox);
 
@@ -277,23 +284,71 @@ void Renderer::Solution24()
 
 
 	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
-	newBox->Movement(glm::vec3(1.5f, 1.f, 4.5f));
-	newBox->Scale(glm::vec3{ 1.f,1.f,1.f });
+	newBox->Movement(glm::vec3(-0.5f, 5.f, 15.5f));
+	newBox->Scale(glm::vec3{ 0.1f,10.f,32.f });
 	m_objectDict.insert(std::make_pair(std::string("wall1"), newBox));
 	MainRobot->AddCollide(newBox);
 
 
-
-
 	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
-	newBox->Movement(glm::vec3(1.5f,1.f, 4.5f));
-	newBox->Scale(glm::vec3{ 1.f,1.f,1.f });
+	newBox->Movement(glm::vec3(31.5f, 5.f, 15.5f));
+	newBox->Scale(glm::vec3{ 0.1f,10.f,32.f });
 	m_objectDict.insert(std::make_pair(std::string("wall2"), newBox));
 	MainRobot->AddCollide(newBox);
 
 
+	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
+	newBox->Movement(glm::vec3(15.5f, 5.f, -0.5f));
+	newBox->Scale(glm::vec3{ 32.f,10.f,0.1f });
+	m_objectDict.insert(std::make_pair(std::string("wall3"), newBox));
+	MainRobot->AddCollide(newBox);
 
 
+	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
+	newBox->Movement(glm::vec3(15.5f, 10.f, 15.5f));
+	newBox->Scale(glm::vec3{ 32.f,0.1f,32.f });
+	m_objectDict.insert(std::make_pair(std::string("wall4"), newBox));
+	MainRobot->AddCollide(newBox);
+
+
+	
+
+	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
+	
+	
+
+	newBox->Movement(glm::vec3(31.5f, 5.f, 31.5f));
+	newBox->Scale(glm::vec3{ 16.f,10.f,0.1f });
+	newBox->SetPivot(glm::vec3{ -0.5f,0.f,0.f });
+
+	newBox->m_p_isMove = true;
+
+
+	m_objectDict.insert(std::make_pair(std::string("door1"), newBox));
+	MainRobot->AddCollide(newBox);
+
+
+
+	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
+
+	newBox->Movement(glm::vec3(-0.5f, 5.f, 31.5f));
+	newBox->Scale(glm::vec3{ 16.f,10.f,0.1f });
+	newBox->SetPivot(glm::vec3{ 0.5f,0.f,0.f });
+	newBox->SetRotateDirection(-1.f);
+
+
+	newBox->m_p_isMove = true;
+	m_objectDict.insert(std::make_pair(std::string("door2"), newBox));
+	MainRobot->AddCollide(newBox);
+
+
+
+	newBox = std::make_shared<Box>(m_shader->GetShaderID(), CubeMesh);
+	newBox->Movement(glm::vec3{ 10.f,2.f,10.f });
+
+	
+	m_objectDict.insert(std::make_pair(std::string("obstacle1"), newBox));
+	MainRobot->AddCollide(newBox);
 
 
 }

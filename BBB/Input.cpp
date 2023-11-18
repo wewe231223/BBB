@@ -4,6 +4,11 @@
 
 Input* Input::InputInstance = nullptr;
 
+
+
+
+
+
 Input* Input::GetInstance(GLFWwindow* window){
 	
 	if (InputInstance == nullptr) {
@@ -31,7 +36,32 @@ Input* Input::GetInstance(GLFWwindow* window){
 		InputInstance->m_prevMouse.x = static_cast<float>(tx_);
 		InputInstance->m_prevMouse.y = static_cast<float>(ty_);
 
+
+
+
+		/* new key state part */
+
+
+
+
+		InputInstance->m_keyboard = new KEY_STATE[255];	
+		ZeroMemory(InputInstance->m_keyboard, 255);
+
+
+		/*
 		
+
+		넣을때 조금 손해보더라도 map 이 키 검색에 유리?
+
+		VK 가 연속적?
+		
+		이러면 맵이 나을듯
+
+
+
+		VK가 연속적인 수가 아니라면 벡터에 넣고 찾을때 순회 비교?	
+
+		*/
 	}
 
 
@@ -83,6 +113,36 @@ void Input::Update(){
 		}
 
 	}
+
+
+
+	/* new input part */
+
+
+
+	//BYTE temp_keyboard[256]{};
+
+	//assert(GetKeyboardState(temp_keyboard));
+
+	//
+
+
+	//for (auto i = 0; i < 256; ++i) {
+
+
+	//	if (temp_keyboard[i] & 0x80) {
+	//		std::cout << "press" << std::endl;
+	//	}
+
+
+	//}
+	//
+
+
+
+
+
+
 
 	double tx_, ty_;
 

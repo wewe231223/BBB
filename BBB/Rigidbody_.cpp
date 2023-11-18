@@ -40,18 +40,53 @@ float fmax3(float f1, float f2, float f3) {
 }
 
 
+glm::vec3 vmax3(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
+
+    float v1l = glm::length(v1);
+    float v2l = glm::length(v2);
+    float v3l = glm::length(v3);
+
+    if (v1l < v2l) {
+        if (v2l < v3l) {
+            std::cout << "z" << std::endl;
+            return v3;
+        }
+        else {
+            std::cout << "y" << std::endl;
+
+            return v2;
+        }
+    }
+    else {
+        if (v1l < v3l) {
+            std::cout << "z" << std::endl;
+
+            return v3;
+        }
+        else {
+            std::cout << "x" << std::endl;
+
+            return v1;
+        }
+
+    }
+
+
+
+}
+
 
 
 
 
 void Rigidbody::Update(float dt) {
-    
 
-    
+
+
 
     glm::vec3 RotateFactor = glm::radians(m_rotate);
 
-    m_axisX = glm::yawPitchRoll(RotateFactor.y, RotateFactor.z, RotateFactor.x) * glm::vec4{m_axisX,1.f};
+    m_axisX = glm::yawPitchRoll(RotateFactor.y, RotateFactor.z, RotateFactor.x) * glm::vec4{ m_axisX,1.f };
     m_axisY = glm::yawPitchRoll(RotateFactor.y, RotateFactor.z, RotateFactor.x) * glm::vec4{ m_axisY,1.f };
     m_axisZ = glm::yawPitchRoll(RotateFactor.y, RotateFactor.z, RotateFactor.x) * glm::vec4{ m_axisZ,1.f };
 
@@ -61,21 +96,69 @@ void Rigidbody::Update(float dt) {
     m_axisZ = glm::normalize(m_axisZ);
 
 
+    float dx{ m_deltaPosition.x };
+    float dy{ m_deltaPosition.y };
+    float dz{ m_deltaPosition.z };
     
+
+    glm::vec3 prev_position = m_position - m_deltaPosition;
+
 
 
     for (auto& other : m_collides) {
 
+
+        prev_position = m_position - m_deltaPosition;
+
         if (OBB(m_position,other->GetPosition(),MakeOBBParameter(),other->MakeOBBParameter())) {
 
-            system("cls");
 
-            if (PlaneRayIntersection(other->GetPosition(), glm::normalize(other->m_axisX), m_position,glm::normalize( glm::vec3{m_position.x - m_volumeX,m_position.y,m_position.z}))) m_position.x -= m_deltaPosition.x;
-            if (PlaneRayIntersection(other->GetPosition(), glm::normalize(other->m_axisY), m_position, glm::normalize(glm::vec3{ m_position.x,m_position.y - m_volumeY,m_position.z }))) m_position.y -= m_deltaPosition.y;
-            if (PlaneRayIntersection(other->GetPosition(), glm::normalize(other->m_axisZ), m_position, glm::normalize(glm::vec3{ m_position.x,m_position.y,m_position.z - m_volumeZ }))) m_position.z -= m_deltaPosition.z;
 
+
+
+            
+            if (OBB(glm::vec3{ prev_position.x + dx, prev_position.y ,prev_position.z }, other->m_position, MakeOBBParameter(), other->MakeOBBParameter())) {
+                m_position.x -= dx;
+
+
+
+            }
+
+            
+            if (OBB(glm::vec3{ prev_position.x ,prev_position.y ,prev_position.z + dz }, other->m_position, MakeOBBParameter(), other->MakeOBBParameter())) {
+
+                m_position.z -= dz;
+            }
+            
+
+            
+
+
+
+
+
+
+            if (OBB(glm::vec3{ prev_position.x,prev_position.y + dy,prev_position.z }, other->m_position, MakeOBBParameter(), other->MakeOBBParameter())) {
+
+
+                m_position.y -= dy;
+                
+
+                
+
+
+
+                
+
+                // temporary code 
+                dy = 0.f;
+            }
 
         }
+
+
+    
+
 
     }
 

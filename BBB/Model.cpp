@@ -163,9 +163,6 @@ void Model::Render(UINT sid){
     glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(finalMatrix));
     glBindVertexArray(m_vao);
 
-    glUseProgram(sid);
-
-
     glDrawElements(GL_TRIANGLES, (GLsizei)m_vertexCount, GL_UNSIGNED_INT, 0);
 
 }

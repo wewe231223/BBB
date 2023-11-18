@@ -20,7 +20,10 @@ private:
 	float2 m_deltaMouse{};
 
 
-	
+
+
+	KEY_STATE* m_keyboard{ nullptr };
+
 	static Input* InputInstance;
 
 public:

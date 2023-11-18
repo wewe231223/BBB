@@ -1,14 +1,15 @@
 #include "pch.h"
 #include "Box.h"
+#include "Input.h"
 
 Box::Box(UINT sid, std::shared_ptr<Mesh> mesh){
 
 	m_body = std::make_unique<Model>(sid, mesh->GetMesh(), mesh->GetVertexCount());
 
-
 	m_position = glm::vec3{ 1.f,0.f,1.f };
 	m_body->Set(m_position, Qualifier::POSITION);
 	
+	m_body->Set(glm::vec3{ 0.f,90.f,0.f }, Qualifier::MAX_ROTATION);
 	
 
 	m_volumeX = 0.5f;
@@ -37,15 +38,35 @@ void Box::Scale(glm::vec3 Scale)
 
 void Box::Render(UINT sid)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	m_body->Render(sid);
 
 
 
+	//RenderVector(sid, m_position, m_axisX * m_volumeX, float3{1.f,0.f,0.f});
+	//RenderVector(sid, m_position, m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
+	//RenderVector(sid, m_position, m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
 
-	RenderVector(sid, m_position, m_axisX * m_volumeX, float3{ 1.f,0.f,0.f });
-	RenderVector(sid, m_position, m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
-	RenderVector(sid, m_position, m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
+
+}
+
+void Box::Update(float dt)
+{
+
+	if (Input::GetInstance()->GetKey(GLFW_KEY_O) == KEY_STATE::DOWN and m_p_isMove) {
+		m_body->Rotate(glm::vec3{ 0.f,10.f,0.f });
+
+	}
+
+
+	if (Input::GetInstance()->GetKey(GLFW_KEY_SPACE) == KEY_STATE::DOWN) {
+		m_body->Rotate(glm::vec3{ 0.f,0.f,0.f });
+	}
+
+	//m_position = glm::yawPitchRoll(glm::radians(10.f * dt), 0.f, 0.f) * glm::vec4{m_position,1.f};
+	m_body->Set(m_position, Qualifier::POSITION);
+	
+	
+	m_body->Update(dt);
 
 
 

@@ -312,7 +312,6 @@ void Robot::Render(UINT sid)
 	
 
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 
 
@@ -327,13 +326,10 @@ void Robot::Render(UINT sid)
 
 
 
-	RenderVector(sid, m_position, m_axisX * m_volumeX,float3{1.f,0.f,0.f  });
-	RenderVector(sid, m_position, m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
-	RenderVector(sid, m_position, m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
 
-	//RenderVector(sid, m_position, -m_axisX * m_volumeX, float3{ 1.f,0.f,0.f });
-	//RenderVector(sid, m_position, -m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
-	//RenderVector(sid, m_position, -m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
+	//RenderVector(sid, m_position, m_axisX * m_volumeX, float3{ 1.f,0.f,0.f });
+	//RenderVector(sid, m_position, m_axisY * m_volumeY, float3{ 0.f,1.f,0.f });
+	//RenderVector(sid, m_position, m_axisZ * m_volumeZ, float3{ 0.f,0.f,1.f });
 
 
 	m_axisX = glm::vec3{ 1.f,0.f,0.f };

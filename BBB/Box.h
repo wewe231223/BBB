@@ -23,8 +23,14 @@ public:
 
 	void Scale(glm::vec3 Scale);
 
+	void SetPivot(glm::vec3 p) { m_body->Set(p, Qualifier::PIVOT); }
+	void SetRotateDirection(float d) { m_body->SetRotateDir(d); }
+
+
+	bool m_p_isMove = false;
+
 	virtual void Render(UINT sid);
-	virtual void Update(float dt) { m_body->Set(m_position, Qualifier::POSITION); };
+	virtual void Update(float dt);
 
 };
 
