@@ -239,6 +239,8 @@ void Renderer::Update(float dt){
 
 }
 
+
+
 void Renderer::Solution24()
 {
 
@@ -349,6 +351,65 @@ void Renderer::Solution24()
 	
 	m_objectDict.insert(std::make_pair(std::string("obstacle1"), newBox));
 	MainRobot->AddCollide(newBox);
+
+
+}
+
+void Renderer::Solution23(){
+
+
+	std::shared_ptr<Mesh> BoardCube  = std::make_shared<Mesh>("cube.obj", float3{ 1.f,0.5f,0.5f });
+	std::shared_ptr<Mesh> BoardCube1  = std::make_shared<Mesh>("cube.obj", float3{ 0.5f,1.f,0.5f });
+	std::shared_ptr<Mesh> BoardCube2 = std::make_shared<Mesh>("cube.obj", float3{ 0.5f,0.5f,1.f });
+	std::shared_ptr<Mesh> BoardCube3 = std::make_shared<Mesh>("cube.obj", float3{ 1.f,0.5f,1.f });
+
+	std::shared_ptr<Mesh> BoxCube1 = std::make_shared<Mesh>("cube.obj", float3{ 1.f,1.f,1.f });
+
+	std::shared_ptr<Box> Mainbox = std::make_shared<Box>(m_shader->GetShaderID(), BoxCube1);
+	Mainbox->Movement(glm::vec3{ 0.f,0.f,0.f });
+	Mainbox->EnableGravity();
+	m_objectDict.insert(std::make_pair(std::string("Mainbox1"), Mainbox));
+
+	
+	std::shared_ptr<Box>Boxptr{ nullptr };
+
+	Boxptr = std::make_shared<Box>(m_shader->GetShaderID(), BoardCube);
+	Boxptr->Scale(glm::vec3{ 10.f,0.1f,10.f });
+	Boxptr->Movement(glm::vec3{ 0.f,-5.f,0.f });
+	Mainbox->AddCollide(Boxptr);
+
+	m_objectDict.insert(std::make_pair(std::string("board1"), Boxptr));
+
+
+	Boxptr = std::make_shared<Box>(m_shader->GetShaderID(), BoardCube1);
+	Boxptr->Scale(glm::vec3{ 0.1f,10.f,10.f });
+	Boxptr->Movement(glm::vec3{ 5.f,0.f,0.f });
+
+	Boxptr->m_p_isRevolution = true;
+	Mainbox->AddCollide(Boxptr);
+
+	m_objectDict.insert(std::make_pair(std::string("board2"), Boxptr));
+
+
+
+	Boxptr = std::make_shared<Box>(m_shader->GetShaderID(), BoardCube2);
+	Boxptr->Scale(glm::vec3{ 0.1f,10.f,10.f });
+	Boxptr->Movement(glm::vec3{ -5.f,0.f,0.f });
+	Mainbox->AddCollide(Boxptr);
+
+	m_objectDict.insert(std::make_pair(std::string("board3"), Boxptr));
+
+
+
+	Boxptr = std::make_shared<Box>(m_shader->GetShaderID(), BoardCube3);
+	Boxptr->Scale(glm::vec3{ 10.f,0.1f,10.f });
+	Boxptr->Movement(glm::vec3{ 0.f,5.f,0.f });
+	Mainbox->AddCollide(Boxptr);
+
+	m_objectDict.insert(std::make_pair(std::string("board4"), Boxptr));
+
+
+
 
 
 }

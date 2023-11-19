@@ -56,6 +56,7 @@ public:
 
 
 	void Solution24();
+	void Solution23();
 
 
 };

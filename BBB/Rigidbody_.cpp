@@ -151,7 +151,7 @@ void Rigidbody::Update(float dt) {
                 
 
                 // temporary code 
-                dy = 0.f;
+                //dy = 0.f;
             }
 
         }

@@ -82,7 +82,9 @@ void Engine::Init() {
 
 
 
-	m_renderer->Solution24();
+	//m_renderer->Solution24();
+	m_renderer->Solution23();
+	
 	//m_renderer->Load("Scene2.properties");
 }
 

@@ -1,7 +1,6 @@
 #pragma once
 
 
-
 enum class Qualifier {
 	POSITION,
 	PIVOT,
@@ -102,6 +101,10 @@ private:
 	std::shared_ptr<Model> m_parent{nullptr};
 
 
+	bool m_rev = true;
+	glm::vec3 m_revolution_rotate{ 0.f };
+
+
 
 
 public:
@@ -123,6 +126,7 @@ public:
 	void Set(std::shared_ptr<Model> Src, Qualifier Qualify) { m_parent = Src; }
 
 
+	
 	
 
 
@@ -146,6 +150,11 @@ public:
 	void SetRotateDir(float dir) { m_rotate_dir = dir; }
 
 	void DelRotate() { m_rotate_speed = glm::vec3{ 0.f }; m_rotation = glm::vec3{ 0.f }; }
+
+
+	void IsRevolution(bool b) { m_rev = b; };
+	void SetRevolution(glm::vec3 angle) { m_revolution_rotate += angle; };
+
 
 
 	void Shrink(float factor) { m_scale *= factor; }

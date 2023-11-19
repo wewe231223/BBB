@@ -4,6 +4,10 @@
 
 constexpr glm::mat4 UnitMatrix = glm::mat4{ 1.f };
 
+
+
+
+
 Model::Model(UINT sid,UINT Vao, size_t VertexCount)
 {
 
@@ -152,7 +156,24 @@ void Model::Render(UINT sid){
 
         m_scaleMatrix = glm::scale(glm::vec3{ m_scale.x,m_scale.y,m_scale.z });
 
-        m_WorldMatrix = m_transMatrix * m_rotationMatrix * m_scaleMatrix;
+        m_WorldMatrix =  m_transMatrix * m_rotationMatrix * m_scaleMatrix;
+    
+       
+        
+        //if (m_rev) {
+
+        //    glm::mat4 revmat = glm::yawPitchRoll(m_revolution_rotate.y, m_revolution_rotate.x, m_revolution_rotate.z);
+        //    m_WorldMatrix =   revmat * m_WorldMatrix;
+
+
+        //
+
+        //}
+
+
+
+
+    
     }
 
 
@@ -168,6 +189,10 @@ void Model::Render(UINT sid){
 }
 
 void Model::Update(float dt){
+
+
+    if (m_rev) { m_rotation += m_rotate_speed * dt; return void();  }
+
     m_rotation.x = std::clamp(m_rotation.x, m_min_Rotation.x, m_max_Rotation.x);
     m_rotation.y = std::clamp(m_rotation.y, m_min_Rotation.y, m_max_Rotation.y);
     m_rotation.z = std::clamp(m_rotation.z, m_min_Rotation.z, m_max_Rotation.z);

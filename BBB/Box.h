@@ -13,7 +13,7 @@ private:
 
 
 
-
+	bool m_gravity = false;
 
 
 
@@ -27,7 +27,13 @@ public:
 	void SetRotateDirection(float d) { m_body->SetRotateDir(d); }
 
 
+	
+
 	bool m_p_isMove = false;
+	bool m_p_isRevolution = false;
+
+	void EnableGravity() { m_gravity = true; }
+
 
 	virtual void Render(UINT sid);
 	virtual void Update(float dt);

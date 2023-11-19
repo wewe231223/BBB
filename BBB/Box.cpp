@@ -52,15 +52,26 @@ void Box::Render(UINT sid)
 void Box::Update(float dt)
 {
 
-	if (Input::GetInstance()->GetKey(GLFW_KEY_O) == KEY_STATE::DOWN and m_p_isMove) {
-		m_body->Rotate(glm::vec3{ 0.f,10.f,0.f });
-
+	
+	if (!m_gravity) {
+		//m_body->SetRevolution(glm::vec3{ 0.f,0.f,1.f * dt });
+		m_body->Rotate(glm::vec3{ 30.f,0.f,0.f });
+		m_position = glm::mat4{ glm::yawPitchRoll(0.f,0.f, glm::radians(30.f * dt)) } * glm::vec4{ m_position ,1.f };
 	}
 
 
 	if (Input::GetInstance()->GetKey(GLFW_KEY_SPACE) == KEY_STATE::DOWN) {
 		m_body->Rotate(glm::vec3{ 0.f,0.f,0.f });
 	}
+
+	if (m_gravity) {
+		m_deltaPosition = glm::vec3{ 0.f,-9.8f * dt,0.f };
+		m_position += m_deltaPosition;
+		Rigidbody::Update(dt);
+
+
+	}
+
 
 	//m_position = glm::yawPitchRoll(glm::radians(10.f * dt), 0.f, 0.f) * glm::vec4{m_position,1.f};
 	m_body->Set(m_position, Qualifier::POSITION);
